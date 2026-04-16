@@ -1,13 +1,11 @@
 /**
- * 自定义 JWT-free Auth 系统（轻量、零依赖）
- * 用 HMAC-SHA256 签名 + base64 cookie
+ * 自定义轻量级 Session 系统
+ * Token = base64(userId) ，纯 HTTP Cookie，不依赖任何 JWT 库
  */
-import { createHmac, randomBytes } from 'crypto'
 import { cookies } from 'next/headers'
 
-const SECRET   = process.env.NEXTAUTH_SECRET || 'bingo-tool-dev-secret-2024!'
-const COOKIE   = 'bingo_session'
-const EXPIRY_MS = 7 * 24 * 60 * 60 * 1000 // 7天
+const COOKIE   = 'b_session'
+const EXPIRY   = 7 * 24 * 60 * 60 // 7天
 
 export interface SessionUser {
   id:       string
@@ -15,30 +13,43 @@ export interface SessionUser {
   email:    string
   avatar?:  string
   plan:     'free' | 'pro'
-  provider: 'github' | 'wechat' | 'email'
+  provider: string
 }
 
-function sign(data: string): string {
-  return createHmac('sha256', SECRET).update(data).digest('base64url')
+// ─── 核心：编码/解码 userId ─────────────────────────────
+function encodeId(id: string): string {
+  return Buffer.from(id).toString('base64url')
 }
 
-export function encodeSession(user: SessionUser): string {
-  const payload = Buffer.from(JSON.stringify(user)).toString('base64url')
-  const sig     = sign(payload)
-  return `${payload}.${sig}`
-}
-
-export function decodeSession(token: string): SessionUser | null {
+function decodeId(token: string): string | null {
   try {
-    const [payload, sig] = token.split('.')
-    if (!payload || !sig || sign(payload) !== sig) return null
-    const user = JSON.parse(Buffer.from(payload, 'base64url').toString()) as SessionUser
-    return user
+    const id = Buffer.from(token, 'base64url').toString()
+    if (!id || id.length < 4) return null
+    return id
   } catch { return null }
 }
 
-// ─── GitHub OAuth ────────────────────────────────────────
+// ─── Session（从 cookie 读取 userId，再查 DB）─────────
+export async function getSession(): Promise<SessionUser | null> {
+  try {
+    const token = cookies().get(COOKIE)?.value
+    if (!token) return null
+    const id = decodeId(token)
+    if (!id) return null
+    // 懒加载避免循环依赖
+    const { getUserById } = await import('./db')
+    return getUserById(id) as SessionUser | null
+  } catch { return null }
+}
+
+// ─── 生成 Session cookie（登录后调用）──────────────
+export async function setSession(userId: string): Promise<string> {
+  return encodeId(userId)
+}
+
+// ─── GitHub OAuth ─────────────────────────────────────
 export function getGithubAuthUrl(): string {
+  const { randomBytes } = await import('crypto')
   const state = randomBytes(16).toString('hex')
   const params = new URLSearchParams({
     client_id:     process.env.GITHUB_CLIENT_ID     || '',
@@ -46,7 +57,7 @@ export function getGithubAuthUrl(): string {
     scope:         'read:user user:email',
     state,
   })
-  return `https://github.com/login/oauth/authorize?${params}&state=${state}`
+  return `https://github.com/login/oauth/authorize?${params}`
 }
 
 export async function exchangeGithubCode(code: string) {
@@ -67,17 +78,10 @@ export async function exchangeGithubCode(code: string) {
   })
   const gh = await userRes.json() as { id?: number; login?: string; name?: string; email?: string; avatar_url?: string }
   return {
-    githubId:  String(gh.id),
-    name:      gh.name || gh.login || 'GitHub User',
-    email:     gh.email || `${gh.id}@github`,
-    avatar:    gh.avatar_url,
-    provider:  'github' as const,
+    githubId: String(gh.id),
+    name:     gh.name || gh.login || 'GitHub User',
+    email:    gh.email || `${gh.id}@github`,
+    avatar:   gh.avatar_url,
+    provider: 'github',
   }
-}
-
-// ─── Session（App Router Server Component 用）────────────
-export async function getSession(): Promise<SessionUser | null> {
-  const token = cookies().get(COOKIE)?.value
-  if (!token) return null
-  return decodeSession(token)
 }
