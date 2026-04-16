@@ -1,20 +1,11 @@
 'use client'
-import { signIn, useSession } from 'next-auth/react'
-import { useState, useEffect, useCallback } from 'react'
-import { useRouter } from 'next/navigation'
+import { signIn } from 'next-auth/react'
+import { useState, useCallback } from 'react'
 
 export default function LoginPage() {
-  const { data: session, status } = useSession()
-  const router = useRouter()
   const [wxScanStatus, setWxScanStatus] = useState<'idle'|'showing'|'scanning'|'confirmed'|'expired'>('idle')
   const [wxSessionId, setWxSessionId] = useState('')
   const [wxQrUrl, setWxQrUrl] = useState('')
-
-  useEffect(() => {
-    if (status === 'authenticated' && session?.user) {
-      router.push('/dashboard')
-    }
-  }, [status, session, router])
 
   const startWechatScan = useCallback(async () => {
     setWxScanStatus('showing')

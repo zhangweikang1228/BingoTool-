@@ -1,61 +1,83 @@
-import NextAuth, { NextAuthOptions } from 'next-auth'
-import GithubProvider from 'next-auth/providers/github'
-import CredentialsProvider from 'next-auth/providers/credentials'
-import { getUserByGithubId, createUser } from './db'
+/**
+ * 自定义 JWT-free Auth 系统（轻量、零依赖）
+ * 用 HMAC-SHA256 签名 + base64 cookie
+ */
+import { createHmac, randomBytes } from 'crypto'
+import { cookies } from 'next/headers'
 
-export const authOptions: NextAuthOptions = {
-  providers: [
-    GithubProvider({
-      clientId:     process.env.GITHUB_CLIENT_ID     || '',
-      clientSecret: process.env.GITHUB_CLIENT_SECRET || '',
+const SECRET   = process.env.NEXTAUTH_SECRET || 'bingo-tool-dev-secret-2024!'
+const COOKIE   = 'bingo_session'
+const EXPIRY_MS = 7 * 24 * 60 * 60 * 1000 // 7天
+
+export interface SessionUser {
+  id:       string
+  name:     string
+  email:    string
+  avatar?:  string
+  plan:     'free' | 'pro'
+  provider: 'github' | 'wechat' | 'email'
+}
+
+function sign(data: string): string {
+  return createHmac('sha256', SECRET).update(data).digest('base64url')
+}
+
+export function encodeSession(user: SessionUser): string {
+  const payload = Buffer.from(JSON.stringify(user)).toString('base64url')
+  const sig     = sign(payload)
+  return `${payload}.${sig}`
+}
+
+export function decodeSession(token: string): SessionUser | null {
+  try {
+    const [payload, sig] = token.split('.')
+    if (!payload || !sig || sign(payload) !== sig) return null
+    const user = JSON.parse(Buffer.from(payload, 'base64url').toString()) as SessionUser
+    return user
+  } catch { return null }
+}
+
+// ─── GitHub OAuth ────────────────────────────────────────
+export function getGithubAuthUrl(): string {
+  const state = randomBytes(16).toString('hex')
+  const params = new URLSearchParams({
+    client_id:     process.env.GITHUB_CLIENT_ID     || '',
+    redirect_uri: `${(process.env.NEXTAUTH_URL || 'http://localhost:3000')}/api/auth/github/callback`,
+    scope:         'read:user user:email',
+    state,
+  })
+  return `https://github.com/login/oauth/authorize?${params}&state=${state}`
+}
+
+export async function exchangeGithubCode(code: string) {
+  const res = await fetch('https://github.com/login/oauth/access_token', {
+    method:  'POST',
+    headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      client_id:     process.env.GITHUB_CLIENT_ID,
+      client_secret: process.env.GITHUB_CLIENT_SECRET,
+      code,
     }),
-    // WeChat 扫码登录
-    CredentialsProvider({
-      id: 'wechat-scan',
-      name: '微信扫码登录',
-      credentials: {
-        openid:   { label: 'openid',   type: 'text' },
-        nickname: { label: 'nickname', type: 'text' },
-        avatar:   { label: 'avatar',   type: 'text' },
-      },
-      async authorize(credentials) {
-        if (!credentials?.openid) return null
-        return { id: credentials.openid, name: credentials.nickname, email: `${credentials.openid}@wechat`, image: credentials.avatar }
-      },
-    }),
-  ],
-  callbacks: {
-    async signIn({ user, account, profile }) {
-      if (account?.provider === 'github') {
-        const ghProfile = profile as { id?: number; login?: string; avatar_url?: string; name?: string; email?: string }
-        let existing = getUserByGithubId(String(ghProfile.id))
-        if (!existing) {
-          existing = createUser({
-            name: ghProfile.name || ghProfile.login || 'GitHub 用户',
-            email: ghProfile.email || `${ghProfile.id}@github`,
-            avatar: ghProfile.avatar_url,
-            provider: 'github',
-            githubId: String(ghProfile.id),
-            plan: 'free',
-          })
-        }
-        user.id = existing.id
-      }
-      return true
-    },
-    async jwt({ token, user, account }) {
-      if (user) { token.userId = user.id; token.provider = account?.provider || 'github' }
-      return token
-    },
-    async session({ session, token }) {
-      if (session.user) {
-        (session.user as any).id = token.userId
-        ;(session.user as any).provider = token.provider
-      }
-      return session
-    },
-  },
-  pages: { signIn: '/login', error: '/login' },
-  session: { strategy: 'jwt' },
-  secret: process.env.NEXTAUTH_SECRET || 'bingo-tool-dev-secret-change-in-production',
+  })
+  const data = await res.json() as { access_token?: string; error?: string }
+  if (!data.access_token) throw new Error(data.error || 'Token exchange failed')
+
+  const userRes = await fetch('https://api.github.com/user', {
+    headers: { Authorization: `Bearer ${data.access_token}`, 'User-Agent': 'BingoTool' }
+  })
+  const gh = await userRes.json() as { id?: number; login?: string; name?: string; email?: string; avatar_url?: string }
+  return {
+    githubId:  String(gh.id),
+    name:      gh.name || gh.login || 'GitHub User',
+    email:     gh.email || `${gh.id}@github`,
+    avatar:    gh.avatar_url,
+    provider:  'github' as const,
+  }
+}
+
+// ─── Session（App Router Server Component 用）────────────
+export async function getSession(): Promise<SessionUser | null> {
+  const token = cookies().get(COOKIE)?.value
+  if (!token) return null
+  return decodeSession(token)
 }
