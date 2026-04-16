@@ -1,1 +1,24 @@
-ZXhwb3J0IGRlZmF1bHQgZnVuY3Rpb24gSG9tZSgpIHsKICByZXR1cm4gPFJlZGlyZWN0VG9BcHAgLz4KfQoKZnVuY3Rpb24gUmVkaXJlY3RUb0FwcCgpIHsKICByZXR1cm4gKAogICAgPGh0bWwgbGFuZz0iemgtQ04iPgogICAgICA8aGVhZD4KICAgICAgICA8bWV0YSBjaGFyU2V0PSJ1dGYtOCIgLz4KICAgICAgICA8bWV0YSBuYW1lPSJ2aWV3cG9ydCIgY29udGVudD0id2lkdGg9ZGV2aWNlLXdpZHRoLCBpbml0aWFsLXNjYWxlPTEsIG1heGltdW0tc2NhbGU9MSwgdXNlci1zY2FsYWJsZT1ubyIgLz4KICAgICAgICA8dGl0bGU+QUkg55S15ZWG5YaF5a655bel5Z2KPC90aXRsZT4KICAgICAgICA8bWV0YSBuYW1lPSJkZXNjcmlwdGlvbiIgY29udGVudD0iQUnpqbHliqjnmoTnlLXllYblhoXlrrnnlJ/miJDlt6XlhbfvvIzmlK/mjIHllYblk4HkuLvlm77jgIHnp43ojYnmlofmoYjjgIHnn63op4bpopHohJrmnKzkuIDnq5nlvI/nlJ/miJAiIC8+CiAgICAgIDwvaGVhZD4KICAgICAgPGJvZHk+CiAgICAgICAgPHNjcmlwdAogICAgICAgICAgZGFuZ2Vyb3VzbHlTZXRJbm5lckhUTUw9e3sKICAgICAgICAgICAgX19odG1sOiBgd2luZG93LmxvY2F0aW9uLmhyZWYgPSAnL2FwcCdgLAogICAgICAgICAgfX0KICAgICAgICAvPgogICAgICAgIOi3s+i9rOS4rS4uLgogICAgICA8L2JvZHk+CiAgICA8L2h0bWw+CiAgKQp9Cg==
+export default function Home() {
+  return <RedirectToApp />
+}
+
+function RedirectToApp() {
+  return (
+    <html lang="zh-CN">
+      <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+        <title>AI 电商内容工坊</title>
+        <meta name="description" content="AI驱动的电商内容生成工具，支持商品主图、种草文案、短视频脚本一站式生成" />
+      </head>
+      <body>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.location.href = '/app'`,
+          }}
+        />
+        跳转中...
+      </body>
+    </html>
+  )
+}

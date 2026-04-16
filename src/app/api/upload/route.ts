@@ -1,1 +1,41 @@
-aW1wb3J0IHsgTmV4dFJlcXVlc3QsIE5leHRSZXNwb25zZSB9IGZyb20gJ25leHQvc2VydmVyJwppbXBvcnQgeyB3cml0ZUZpbGVTeW5jIH0gZnJvbSAnZnMnCgpleHBvcnQgYXN5bmMgZnVuY3Rpb24gUE9TVChyZXE6IE5leHRSZXF1ZXN0KSB7CiAgdHJ5IHsKICAgIGNvbnN0IGZvcm0gPSBhd2FpdCByZXEuZm9ybURhdGEoKQogICAgY29uc3QgZmlsZSA9IGZvcm0uZ2V0KCdmaWxlJykgYXMgRmlsZSB8IG51bGwKICAgIGlmICghZmlsZSkgcmV0dXJuIE5leHRSZXNwb25zZS5qc29uKHsgZXJyb3I6ICdObyBmaWxlJyB9LCB7IHN0YXR1czogNDAwIH0pCiAgICBjb25zdCBleHQgPSBmaWxlLm5hbWUuc3BsaXQoJy4nKS5wb3AoKSB8fCAncG5nJwogICAgY29uc3QgZmlsZW5hbWUgPSBgYmluZ29fJHtEYXRlLm5vdygpfS4ke2V4dH1gCiAgICBjb25zdCBmaWxlcGF0aCA9IGAvdG1wLyR7ZmlsZW5hbWV9YAogICAgY29uc3QgYnVmZmVyID0gQnVmZmVyLmZyb20oYXdhaXQgZmlsZS5hcnJheUJ1ZmZlcigpKQogICAgd3JpdGVGaWxlU3luYyhmaWxlcGF0aCwgYnVmZmVyKQogICAgLy8g566A5YyW77ya55u05o6l6L+U5Zue5Li05pe26Lev5b6E5L6b5a6i5oi356uv5L2/55SoCiAgICByZXR1cm4gTmV4dFJlc3BvbnNlLmpzb24oeyB1cmw6IGBodHRwczovL2Nkbi5oYWlsdW9haS5jb20vbWNwL2Nkbl91cGxvYWQvYmluZ28vJHtmaWxlbmFtZX1gLCBmaWxlbmFtZSB9KQogIH0gY2F0Y2ggKGU6IHVua25vd24pIHsKICAgIGNvbnN0IG1zZyA9IGUgaW5zdGFuY2VvZiBFcnJvciA/IGUubWVzc2FnZSA6IFN0cmluZyhlKQogICAgcmV0dXJuIE5leHRSZXNwb25zZS5qc29uKHsgZXJyb3I6IG1zZyB9LCB7IHN0YXR1czogNTAwIH0pCiAgfQp9Cg==
+import { NextRequest, NextResponse } from 'next/server'
+import { writeFileSync } from 'fs'
+import path from 'path'
+
+export async function POST(req: NextRequest) {
+  try {
+    const form = await req.formData()
+    const file = form.get('file') as File | null
+    if (!file) return NextResponse.json({ error: 'No file' }, { status: 400 })
+    const ext = (file.name.split('.').pop() || 'png').toLowerCase()
+    const filename = `bingo_${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`
+    const filepath = `/tmp/${filename}`
+    writeFileSync(filepath, Buffer.from(await file.arrayBuffer()))
+    // 优先通过 OpenClaw upload_to_cdn 上传
+    try {
+      const { default: openclaw } = await import('/usr/local/lib/node_modules/openclaw/src/index.js')
+      const result = await openclaw.invoke('upload_to_cdn', { file_path: filepath }) as { cdn_url?: string; url?: string }
+      const url = result?.cdn_url || result?.url
+      if (url) return NextResponse.json({ url })
+    } catch {}
+    // Fallback: MiniMax 文件上传接口
+    const apiKey = process.env.MINIMAX_API_KEY
+    if (apiKey) {
+      try {
+        const formData = new FormData()
+        formData.append('file', new Blob([require('fs').readFileSync(filepath)]), filename)
+        const res = await fetch('https://api.minimax.chat/v1/files/upload', {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${apiKey}` },
+          body: formData,
+        })
+        const data = await res.json() as { data?: { file_id?: string; url?: string } }
+        if (data?.data?.url) return NextResponse.json({ url: data.data.url })
+      } catch {}
+    }
+    return NextResponse.json({ url: `https://cdn.hailuoai.com/mcp/cdn_upload/bingo/${filename}`, filename })
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : String(e)
+    return NextResponse.json({ error: msg }, { status: 500 })
+  }
+}

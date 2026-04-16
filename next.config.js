@@ -1,1 +1,5 @@
-LyoqIEB0eXBlIHtpbXBvcnQoJ25leHQnKS5OZXh0Q29uZmlnfSAqLwpjb25zdCBuZXh0Q29uZmlnID0gewogIG91dHB1dDogJ3N0YW5kYWxvbmUnLAp9Cm1vZHVsZS5leHBvcnRzID0gbmV4dENvbmZpZwo=
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  output: 'standalone',
+}
+module.exports = nextConfig

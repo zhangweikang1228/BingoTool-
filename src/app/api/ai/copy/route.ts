@@ -1,1 +1,34 @@
-aW1wb3J0IHsgTmV4dFJlcXVlc3QsIE5leHRSZXNwb25zZSB9IGZyb20gJ25leHQvc2VydmVyJwppbXBvcnQgeyBsbG1UYXNrIH0gZnJvbSAnLi4vLi4vLi4vLi4vbGliL2FpJwoKZXhwb3J0IGFzeW5jIGZ1bmN0aW9uIFBPU1QocmVxOiBOZXh0UmVxdWVzdCkgewogIHRyeSB7CiAgICBjb25zdCB7IHByb2R1Y3QsIHBsYXRmb3JtIH0gPSBhd2FpdCByZXEuanNvbigpCiAgICBpZiAoIXByb2R1Y3Q/LnRyaW0oKSkgcmV0dXJuIE5leHRSZXNwb25zZS5qc29uKHsgZXJyb3I6ICfllYblk4Hmj4/ov7DkuI3og73kuLrnqbonIH0sIHsgc3RhdHVzOiA0MDAgfSkKCiAgICBjb25zdCBwcm9tcHRzOiBSZWNvcmQ8c3RyaW5nLCBzdHJpbmc+ID0gewogICAgICB4aWFvaG9uZ3NodTogYOS9oOaYr+S4gOS9jeS4k+S4mueahOWwj+e6ouS5puenjeiNieaWh+ahiOWNmuS4u++8jOaThemVv+WGmeacieaEn+afk+WKm+eahOWVhuWTgeaOqOiNkOaWh+ahiOOAglxuXG7opoHmsYLvvJpcbi0g5byA5aS05pyJ5Luj5YWl5oSf55qE55Sf5rS75Zy65pmv5YiH5YWlXG4tIOS6p+WTgeWNlueCueiejeWFpeecn+WunuS9k+mqjO+8jOS4jeeUn+ehrFxuLSDnu5PlsL7mnInkupLliqjlvJXlr7zvvIjmlLbol48v54K56LWeL+ivhOiuuu+8iVxuLSDpgILlvZPnlKhlbW9qae+8jOavj+auteS4jemVv1xuLSDlrZfmlbAzMDAtNTAw5a2XXG5cbuWVhuWTgeS/oeaBr++8miR7cHJvZHVjdH1gLAogICAgICBkb3V5aW46IGDkvaDmmK/kuIDkvY3mipbpn7PluKbotKfkuLvmkq3vvIzmk4Xplb/lhpnmnInoioLlpY/mhJ/jgIHlhrLliqjmtojotLnlnovnmoTluKbotKfohJrmnKzjgIJcblxu6KaB5rGC77yaXG4tIOWJjTPnp5Llv4XpobvmipPnnLznkIPvvIjnlpHpl67lj6Uv5Yay56qB5Zy65pmvL+aVsOWtl++8iVxuLSDnl5vngrkr6Kej5Yaz5pa55qGI57uT5p6EXG4tIOWkmuasoemHjeWkjeaguOW/g+WNlueCue+8jOWItumAoOiusOW/hueCuVxuLSDnu5PlsL7kv4PljZXor53mnK9cbi0g6YWN5ZCI5a2X5bmV5qCH5rOo5ZKM6ZWc5aS05bu66K6uXG4tIOWtl+aVsDQwMC02MDDlrZdcblxu5ZWG5ZOB5L+h5oGv77yaJHtwcm9kdWN0fWAsCiAgICAgIHdlaWJvOiBg5L2g5piv5LiA5L2N55Sf5rS75pa55byP57G75b6u5Y2a5Y2a5Li777yM5pOF6ZW/5YaZ6Ieq54S256eN6I2J55qE6ZW/5Zu+5paH44CCXG5cbuimgeaxgu+8mlxuLSDovbvmnb7nrKzkuIDkurrnp7DliIbkuqvlj6PlkLtcbi0g5Zu+5paH57uT5ZCI77yM5pyJ5bGC5qyh5oSfXG4tIOakjeWFpeiHqueEtu+8jOS4jeWDj+ehrOW5v+WRilxuLSDpgILlvZPluKbor53popjmoIfnrb4gI+WlveeJqeaOqOiNkCAj56eN6I2JXG4tIOWtl+aVsDIwMC00MDDlrZdcblxu5ZWG5ZOB5L+h5oGv77yaJHtwcm9kdWN0fWAsCiAgICB9CgogICAgY29uc3QgcHJvbXB0ID0gcHJvbXB0c1twbGF0Zm9ybV0gfHwgcHJvbXB0cy54aWFvaG9uZ3NodQogICAgY29uc3QgdGV4dCA9IGF3YWl0IGxsbVRhc2socHJvbXB0LCAyMDAwKQogICAgcmV0dXJuIE5leHRSZXNwb25zZS5qc29uKHsgc3VjY2VzczogdHJ1ZSwgdGV4dCB9KQogIH0gY2F0Y2ggKGU6IHVua25vd24pIHsKICAgIGNvbnN0IG1zZyA9IGUgaW5zdGFuY2VvZiBFcnJvciA/IGUubWVzc2FnZSA6IFN0cmluZyhlKQogICAgcmV0dXJuIE5leHRSZXNwb25zZS5qc29uKHsgZXJyb3I6IG1zZyB9LCB7IHN0YXR1czogNTAwIH0pCiAgfQp9Cg==
+import { NextRequest, NextResponse } from 'next/server'
+import { generateCopy } from '../../../../lib/ai'
+
+export const runtime = 'nodejs'
+
+export async function POST(req: NextRequest) {
+  const apiKey = process.env.MINIMAX_API_KEY || process.env.NEXT_PUBLIC_MINIMAX_API_KEY
+
+  if (!apiKey) {
+    return NextResponse.json(
+      { error: 'MINIMAX_API_KEY 未配置，请联系管理员设置环境变量' },
+      { status: 503 }
+    )
+  }
+
+  try {
+    const { product, platform } = await req.json()
+
+    if (!product?.trim()) {
+      return NextResponse.json({ error: '商品描述不能为空' }, { status: 400 })
+    }
+
+    if (!['xiaohongshu', 'douyin', 'weibo'].includes(platform)) {
+      return NextResponse.json({ error: '不支持的平台类型' }, { status: 400 })
+    }
+
+    const result = await generateCopy(product.trim(), platform, apiKey)
+    return NextResponse.json({ success: true, text: result.text })
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : '生成失败，请重试'
+    console.error('[AI Copy]', msg)
+    return NextResponse.json({ error: msg }, { status: 500 })
+  }
+}

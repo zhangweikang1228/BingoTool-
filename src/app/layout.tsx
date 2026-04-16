@@ -1,1 +1,15 @@
-ZXhwb3J0IGNvbnN0IG1ldGFkYXRhID0gewogIHRpdGxlOiAnQUkg55S15ZWG5YaF5a655bel5Z2KJywKICBkZXNjcmlwdGlvbjogJ0FJ6amx5Yqo55qE55S15ZWG5YaF5a6555Sf5oiQ5bel5YW3JywKfQpleHBvcnQgZGVmYXVsdCBmdW5jdGlvbiBSb290TGF5b3V0KHsgY2hpbGRyZW4gfTogeyBjaGlsZHJlbjogUmVhY3QuUmVhY3ROb2RlIH0pIHsKICByZXR1cm4gKAogICAgPGh0bWwgbGFuZz0iemgtQ04iPgogICAgICA8aGVhZD4KICAgICAgICA8bWV0YSBjaGFyU2V0PSJ1dGYtOCIgLz4KICAgICAgICA8bWV0YSBuYW1lPSJ2aWV3cG9ydCIgY29udGVudD0id2lkdGg9ZGV2aWNlLXdpZHRoLCBpbml0aWFsLXNjYWxlPTEsIG1heGltdW0tc2NhbGU9MSIgLz4KICAgICAgPC9oZWFkPgogICAgICA8Ym9keSBzdHlsZT17eyBtYXJnaW46IDAgfX0+e2NoaWxkcmVufTwvYm9keT4KICAgIDwvaHRtbD4KICApCn0K
+export const metadata = {
+  title: 'AI 电商内容工坊',
+  description: 'AI驱动的电商内容生成工具',
+}
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="zh-CN">
+      <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+      </head>
+      <body style={{ margin: 0 }}>{children}</body>
+    </html>
+  )
+}

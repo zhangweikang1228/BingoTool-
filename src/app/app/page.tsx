@@ -1,1 +1,497 @@
-J3VzZSBjbGllbnQnCmltcG9ydCB7IHVzZVN0YXRlLCB1c2VSZWYgfSBmcm9tICdyZWFjdCcKaW1wb3J0ICcuL3BhZ2UuY3NzJwoKY29uc3QgQU5HTEVfTUFQID0gWydmcm9udCcsJ3NpZGUnLCdiYWNrJywnYW5nbGU0NScsJ3RvcCcsJ2RldGFpbCddCmNvbnN0IEFOR0xFX0xBQkVMUyA9IFsn5q2j6Z2i5Zu+Jywn5L6n6Z2i5Zu+Jywn6IOM6Z2i5Zu+JywnNDXCsOinhuinkicsJ+S/r+inhuWbvicsJ+e7huiKguWbviddCgpleHBvcnQgZGVmYXVsdCBmdW5jdGlvbiBBcHBQYWdlKCkgewogIGNvbnN0IFt0YWIsIHNldFRhYl0gPSB1c2VTdGF0ZTwncGhvdG8nfCdjb3B5J3wndmlkZW8nPigncGhvdG8nKQogIHJldHVybiAoCiAgICA8ZGl2IGNsYXNzTmFtZT0iYXBwIj4KICAgICAgPGhlYWRlciBjbGFzc05hbWU9ImhkciI+CiAgICAgICAgPGRpdiBjbGFzc05hbWU9Imhkci1sb2dvIj48c3Bhbj7wn5uSPC9zcGFuPiBBSeeUteWVhuWGheWuueW3peWdijwvZGl2PgogICAgICAgIDxkaXYgY2xhc3NOYW1lPSJoZHItYmFkZ2UiPk1pbmlNYXggQUk8L2Rpdj4KICAgICAgPC9oZWFkZXI+CiAgICAgIDxkaXYgY2xhc3NOYW1lPSJwYWdlIj4KICAgICAgICB7dGFiID09PSAncGhvdG8nICYmIDxQaG90b01vZHVsZSAvPn0KICAgICAgICB7dGFiID09PSAnY29weScgICYmIDxDb3B5TW9kdWxlIC8+fQogICAgICAgIHt0YWIgPT09ICd2aWRlbycgJiYgPFZpZGVvTW9kdWxlIC8+fQogICAgICA8L2Rpdj4KICAgICAgPGRpdiBjbGFzc05hbWU9InRhYmJhciI+CiAgICAgICAgPGJ1dHRvbiBjbGFzc05hbWU9e2B0YWItYnRuICR7dGFiPT09J3Bob3RvJz8nb24nOicnfWB9IG9uQ2xpY2s9eygpPT5zZXRUYWIoJ3Bob3RvJyl9PjxzcGFuIGNsYXNzTmFtZT0idGFiLWljb24iPvCfk7g8L3NwYW4+PHNwYW4gY2xhc3NOYW1lPSJ0YWItbGFiZWwiPuWVhuWTgeS4u+Wbvjwvc3Bhbj48L2J1dHRvbj4KICAgICAgICA8YnV0dG9uIGNsYXNzTmFtZT17YHRhYi1idG4gJHt0YWI9PT0nY29weSc/J29uJzonJ31gfSAgb25DbGljaz17KCk9PnNldFRhYignY29weScpfT48c3BhbiBjbGFzc05hbWU9InRhYi1pY29uIj7inI3vuI88L3NwYW4+PHNwYW4gY2xhc3NOYW1lPSJ0YWItbGFiZWwiPuenjeiNieaWh+ahiDwvc3Bhbj48L2J1dHRvbj4KICAgICAgICA8YnV0dG9uIGNsYXNzTmFtZT17YHRhYi1idG4gJHt0YWI9PT0ndmlkZW8nPydvbic6Jyd9YH0gb25DbGljaz17KCk9PnNldFRhYigndmlkZW8nKX0+PHNwYW4gY2xhc3NOYW1lPSJ0YWItaWNvbiI+8J+OrDwvc3Bhbj48c3BhbiBjbGFzc05hbWU9InRhYi1sYWJlbCI+6KeG6aKR6ISa5pysPC9zcGFuPjwvYnV0dG9uPgogICAgICA8L2Rpdj4KICAgIDwvZGl2PgogICkKfQoKZnVuY3Rpb24gUGhvdG9Nb2R1bGUoKSB7CiAgY29uc3QgW2ltZywgc2V0SW1nXSA9IHVzZVN0YXRlPHN0cmluZ3xudWxsPihudWxsKQogIGNvbnN0IFtpbWdVcmwsIHNldEltZ1VybF0gPSB1c2VTdGF0ZTxzdHJpbmd8bnVsbD4obnVsbCkKICBjb25zdCBbc2VsLCBzZXRTZWxdID0gdXNlU3RhdGUoW3RydWUsZmFsc2UsZmFsc2UsdHJ1ZSxmYWxzZSxmYWxzZV0pCiAgY29uc3QgW3Jlc3VsdHMsIHNldFJlc3VsdHNdID0gdXNlU3RhdGU8UmVjb3JkPHN0cmluZyxzdHJpbmc+Pih7fSkKICBjb25zdCBbbG9hZGluZywgc2V0TG9hZGluZ10gPSB1c2VTdGF0ZShmYWxzZSkKICBjb25zdCBbdmlldywgc2V0Vmlld10gPSB1c2VTdGF0ZTwnY3JlYXRlJ3wncmVzdWx0Jz4oJ2NyZWF0ZScpCiAgY29uc3QgZmlsZVJlZiA9IHVzZVJlZjxIVE1MSW5wdXRFbGVtZW50PihudWxsKQoKICBjb25zdCBoYW5kbGVGaWxlID0gYXN5bmMgKGU6IFJlYWN0LkNoYW5nZUV2ZW50PEhUTUxJbnB1dEVsZW1lbnQ+KSA9PiB7CiAgICBjb25zdCBmID0gZS50YXJnZXQuZmlsZXM/LlswXTsgaWYgKCFmKSByZXR1cm4KICAgIGNvbnN0IHJlYWRlciA9IG5ldyBGaWxlUmVhZGVyKCkKICAgIHJlYWRlci5vbmxvYWQgPSBldiA9PiB7IHNldEltZyhldi50YXJnZXQ/LnJlc3VsdCBhcyBzdHJpbmcpOyBzZXRSZXN1bHRzKHt9KTsgc2V0VmlldygnY3JlYXRlJykgfQogICAgcmVhZGVyLnJlYWRBc0RhdGFVUkwoZikKICAgIGNvbnN0IGZvcm0gPSBuZXcgRm9ybURhdGEoKTsgZm9ybS5hcHBlbmQoJ2ZpbGUnLCBmKQogICAgdHJ5IHsKICAgICAgY29uc3QgcmVzID0gYXdhaXQgZmV0Y2goJy9hcGkvdXBsb2FkJywgeyBtZXRob2Q6J1BPU1QnLCBib2R5OmZvcm0gfSkKICAgICAgY29uc3QgZGF0YSA9IGF3YWl0IHJlcy5qc29uKCk7IHNldEltZ1VybChkYXRhLnVybCkKICAgIH0gY2F0Y2gge30KICB9CgogIGNvbnN0IHRvZ2dsZSA9IChpOiBudW1iZXIpID0+IHsgY29uc3Qgcz1bLi4uc2VsXTsgc1tpXT0hc1tpXTsgc2V0U2VsKHMpIH0KCiAgY29uc3QgZ2VuZXJhdGUgPSBhc3luYyAoKSA9PiB7CiAgICBpZiAoIWltZ1VybCkgeyBhbGVydCgn5Zu+54mH5LiK5Lyg5Lit77yM6K+356iN5YCZJyk7IHJldHVybiB9CiAgICBzZXRMb2FkaW5nKHRydWUpCiAgICBjb25zdCBvdXQ6IFJlY29yZDxzdHJpbmcsc3RyaW5nPiA9IHt9CiAgICBmb3IgKGNvbnN0IFtpLCBpZF0gb2YgQU5HTEVfTUFQLmVudHJpZXMoKSkgewogICAgICBpZiAoIXNlbFtpXSkgY29udGludWUKICAgICAgdHJ5IHsKICAgICAgICBjb25zdCByZXMgPSBhd2FpdCBmZXRjaCgnL2FwaS9haS9pbWFnZScsIHsgbWV0aG9kOidQT1NUJywgaGVhZGVyczp7J0NvbnRlbnQtVHlwZSc6J2FwcGxpY2F0aW9uL2pzb24nfSwgYm9keTogSlNPTi5zdHJpbmdpZnkoeyBpbWFnZVVybDogaW1nVXJsLCBhbmdsZTogaWQgfSkgfSkKICAgICAgICBjb25zdCBkYXRhID0gYXdhaXQgcmVzLmpzb24oKQogICAgICAgIG91dFtpZF0gPSBkYXRhLnVybCB8fCBgaHR0cHM6Ly9waWNzdW0ucGhvdG9zL3NlZWQvJHtpZH0ke0RhdGUubm93KCl9LzQ4MC80ODBgCiAgICAgIH0gY2F0Y2ggeyBvdXRbaWRdID0gYGh0dHBzOi8vcGljc3VtLnBob3Rvcy9zZWVkLyR7aWR9JHtEYXRlLm5vdygpfS80ODAvNDgwYCB9CiAgICB9CiAgICBzZXRSZXN1bHRzKG91dCk7IHNldExvYWRpbmcoZmFsc2UpOyBzZXRWaWV3KCdyZXN1bHQnKQogIH0KCiAgY29uc3QgcmVzZXQgPSAoKSA9PiB7IHNldEltZyhudWxsKTsgc2V0SW1nVXJsKG51bGwpOyBzZXRSZXN1bHRzKHt9KTsgc2V0U2VsKFt0cnVlLGZhbHNlLGZhbHNlLHRydWUsZmFsc2UsZmFsc2VdKTsgZmlsZVJlZi5jdXJyZW50ICYmIChmaWxlUmVmLmN1cnJlbnQudmFsdWU9JycpIH0KCiAgcmV0dXJuICgKICAgIDxkaXYgY2xhc3NOYW1lPSJtb2R1bGUiPgogICAgICB7dmlldyA9PT0gJ2NyZWF0ZScgPyAoCiAgICAgICAgPGRpdiBjbGFzc05hbWU9ImNhcmQiPgogICAgICAgICAgPGRpdiBjbGFzc05hbWU9ImNhcmQtdGl0bGUiPvCfk7gg5ZWG5ZOB5aSa6KeS5bqm5Zu+IDxzcGFuIGNsYXNzTmFtZT0idGFnIj5NaW5pTWF4IEFJPC9zcGFuPjwvZGl2PgogICAgICAgICAgPGRpdiBjbGFzc05hbWU9InVwbG9hZC16b25lIiBvbkNsaWNrPXsoKT0+ZmlsZVJlZi5jdXJyZW50Py5jbGljaygpfT4KICAgICAgICAgICAge2ltZyA/IDxpbWcgc3JjPXtpbWd9IGNsYXNzTmFtZT0icHJldmlldy1pbWciIGFsdD0i6aKE6KeIIiAvPiA6IDxkaXY+PGRpdiBjbGFzc05hbWU9InVwbG9hZC1pY29uIj7wn5a877iPPC9kaXY+PGRpdiBjbGFzc05hbWU9InVwbG9hZC10MSI+54K55Ye75LiK5Lyg5ZWG5ZOB5Zu+54mHPC9kaXY+PGRpdiBjbGFzc05hbWU9InVwbG9hZC10MiI+55m95bqV5Zu+5pWI5p6c5pyA5L2zIMK3IEpQRy9QTkc8L2Rpdj48L2Rpdj59CiAgICAgICAgICA8L2Rpdj4KICAgICAgICAgIDxpbnB1dCByZWY9e2ZpbGVSZWZ9IHR5cGU9ImZpbGUiIGFjY2VwdD0iaW1hZ2UvKiIgc3R5bGU9e3tkaXNwbGF5Oidub25lJ319IG9uQ2hhbmdlPXtoYW5kbGVGaWxlfSAvPgogICAgICAgICAge2ltZyAmJiA8YnV0dG9uIGNsYXNzTmFtZT0iYnRuLWdob3N0IGJ0bi1zbSIgb25DbGljaz17cmVzZXR9PuKGuiDph43mlrDkuIrkvKA8L2J1dHRvbj59CiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0iY2hpcC1sYWJlbCI+6YCJ5oup55Sf5oiQ6KeG6KeS77yI5Y+v5aSa6YCJ77yJPC9kaXY+CiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0iY2hpcC1ncmlkIj4KICAgICAgICAgICAge0FOR0xFX0xBQkVMUy5tYXAoKGwsaSk9PjxkaXYga2V5PXtpfSBjbGFzc05hbWU9e2BjaGlwICR7c2VsW2ldPydvbic6Jyd9YH0gb25DbGljaz17KCk9PnRvZ2dsZShpKX0+PHNwYW4gY2xhc3NOYW1lPSJjaGlwLWRvdCI+e3NlbFtpXT8n4pyTJzonJ308L3NwYW4+e2x9PC9kaXY+KX0KICAgICAgICAgIDwvZGl2PgogICAgICAgICAgPGRpdiBjbGFzc05hbWU9ImluZm8tcm93Ij7lt7LpgIkgPGI+e3NlbC5maWx0ZXIoQm9vbGVhbikubGVuZ3RofTwvYj4g5Liq6KeG6KeSPC9kaXY+CiAgICAgICAgICA8YnV0dG9uIGNsYXNzTmFtZT0iYnRuLXByaW1hcnkiIG9uQ2xpY2s9e2dlbmVyYXRlfSBkaXNhYmxlZD17IWltZ3x8bG9hZGluZ30+e2xvYWRpbmcgPyAn4o+zIEFJIOeUn+aIkOS4rS4uLicgOiBg8J+OryDnlJ/miJAgJHtzZWwuZmlsdGVyKEJvb2xlYW4pLmxlbmd0aH0g5byg5aSa6KeS5bqm5Zu+YH08L2J1dHRvbj4KICAgICAgICA8L2Rpdj4KICAgICAgKSA6ICgKICAgICAgICA8ZGl2IGNsYXNzTmFtZT0iY2FyZCI+CiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0iZmxleC1iZXR3ZWVuIiBzdHlsZT17e21hcmdpbkJvdHRvbToxMn19PgogICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0ibXV0ZWQtdGV4dCI+8J+WvO+4jyDnlJ/miJDnu5PmnpzvvIjngrnlh7vmn6XnnIvlpKflm77vvIk8L2Rpdj4KICAgICAgICAgICAgPGJ1dHRvbiBjbGFzc05hbWU9ImJ0bi1naG9zdCBidG4tc20iIG9uQ2xpY2s9eygpPT5zZXRWaWV3KCdjcmVhdGUnKX0+4oaQIOe7p+e7reeUn+aIkDwvYnV0dG9uPgogICAgICAgICAgPC9kaXY+CiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0icmVzdWx0LWdyaWQiPgogICAgICAgICAgICB7T2JqZWN0LmVudHJpZXMocmVzdWx0cykubWFwKChbaWQsdXJsXSk9PigKICAgICAgICAgICAgICA8ZGl2IGtleT17aWR9IGNsYXNzTmFtZT0icmdyaWQtaXRlbSI+CiAgICAgICAgICAgICAgICA8YSBocmVmPXt1cmx9IHRhcmdldD0iX2JsYW5rIiByZWw9Im5vb3BlbmVyIj48aW1nIHNyYz17dXJsfSBjbGFzc05hbWU9InJncmlkLWltZyIgYWx0PXtBTkdMRV9MQUJFTFNbQU5HTEVfTUFQLmluZGV4T2YoaWQpXX0gLz48L2E+CiAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0icmdyaWQtbGJsIj57QU5HTEVfTEFCRUxTW0FOR0xFX01BUC5pbmRleE9mKGlkKV19PC9kaXY+CiAgICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICAgICkpfQogICAgICAgICAgPC9kaXY+CiAgICAgICAgICA8YnV0dG9uIGNsYXNzTmFtZT0iYnRuLXByaW1hcnkiIG9uQ2xpY2s9e2dlbmVyYXRlfT7wn5SEIOmHjeaWsOeUn+aIkDwvYnV0dG9uPgogICAgICAgIDwvZGl2PgogICAgICApfQogICAgPC9kaXY+CiAgKQp9CgpmdW5jdGlvbiBDb3B5TW9kdWxlKCkgewogIGNvbnN0IFtzdHlsZSwgc2V0U3R5bGVdID0gdXNlU3RhdGU8J3hpYW9ob25nc2h1J3wnZG91eWluJ3wnd2VpYm8nPigneGlhb2hvbmdzaHUnKQogIGNvbnN0IFtpbnB1dCwgc2V0SW5wdXRdID0gdXNlU3RhdGUoJycpCiAgY29uc3QgW291dHB1dCwgc2V0T3V0cHV0XSA9IHVzZVN0YXRlKCcnKQogIGNvbnN0IFtsb2FkaW5nLCBzZXRMb2FkaW5nXSA9IHVzZVN0YXRlKGZhbHNlKQogIGNvbnN0IFtzaG93UmVzdWx0LCBzZXRTaG93UmVzdWx0XSA9IHVzZVN0YXRlKGZhbHNlKQogIGNvbnN0IHN0eWxlcyA9IFt7IGlkOid4aWFvaG9uZ3NodScgYXMgY29uc3QsIGxhYmVsOiflsI/nuqLkuaYnLCBlbW9qaTon8J+TlScgfSx7IGlkOidkb3V5aW4nIGFzIGNvbnN0LCBsYWJlbDon5oqW6Z+zJywgZW1vamk6J/CfjrUnIH0seyBpZDond2VpYm8nIGFzIGNvbnN0LCBsYWJlbDon5b6u5Y2aJywgZW1vamk6J/CfjJ8nIH1dCgogIGNvbnN0IGdlbmVyYXRlID0gYXN5bmMgKCkgPT4gewogICAgaWYgKCFpbnB1dC50cmltKCkpIHJldHVybgogICAgc2V0TG9hZGluZyh0cnVlKTsgc2V0U2hvd1Jlc3VsdCh0cnVlKTsgc2V0T3V0cHV0KCcnKQogICAgdHJ5IHsKICAgICAgY29uc3QgcmVzID0gYXdhaXQgZmV0Y2goJy9hcGkvYWkvY29weScsIHsgbWV0aG9kOidQT1NUJywgaGVhZGVyczp7J0NvbnRlbnQtVHlwZSc6J2FwcGxpY2F0aW9uL2pzb24nfSwgYm9keTogSlNPTi5zdHJpbmdpZnkoeyBwcm9kdWN0OiBpbnB1dCwgcGxhdGZvcm06IHN0eWxlIH0pIH0pCiAgICAgIGNvbnN0IGRhdGEgPSBhd2FpdCByZXMuanNvbigpOyBzZXRPdXRwdXQoZGF0YS50ZXh0IHx8ICfnlJ/miJDlpLHotKUnKQogICAgfSBjYXRjaCB7IHNldE91dHB1dCgn572R57uc6ZSZ6K+v77yM6K+36YeN6K+VJykgfQogICAgc2V0TG9hZGluZyhmYWxzZSkKICB9CgogIHJldHVybiAoCiAgICA8ZGl2IGNsYXNzTmFtZT0ibW9kdWxlIj4KICAgICAgPGRpdiBjbGFzc05hbWU9ImNhcmQiPgogICAgICAgIDxkaXYgY2xhc3NOYW1lPSJjYXJkLXRpdGxlIj7inI3vuI8gQUkg56eN6I2J5paH5qGIIDxzcGFuIGNsYXNzTmFtZT0idGFnIj5NaW5pTWF4IExMTTwvc3Bhbj48L2Rpdj4KICAgICAgICA8ZGl2IGNsYXNzTmFtZT0ic3R5bGUtdGFicyI+e3N0eWxlcy5tYXAocz0+PGJ1dHRvbiBrZXk9e3MuaWR9IGNsYXNzTmFtZT17YHN0eWxlLXRhYiAke3N0eWxlPT09cy5pZD8nb24nOicnfWB9IG9uQ2xpY2s9eygpPT5zZXRTdHlsZShzLmlkKX0+PHNwYW4+e3MuZW1vaml9PC9zcGFuPntzLmxhYmVsfTwvYnV0dG9uPil9PC9kaXY+CiAgICAgICAgPHRleHRhcmVhIGNsYXNzTmFtZT0idGEiIHJvd3M9ezR9IHBsYWNlaG9sZGVyPSLmj4/ov7DkvaDnmoTllYblk4HvvIzotoror6bnu4botorlpb1+XG7kvovlpoLvvJrpn6nns7vnoo7oirHov57ooaPoo5nvvIzlpI/lraPmlrDmrL7vvIzpgI/msJTovbvoloTvvIzpgILlkIjlsI/kuKrlrZAuLi4iIHZhbHVlPXtpbnB1dH0gb25DaGFuZ2U9e2U9PnNldElucHV0KGUudGFyZ2V0LnZhbHVlKX0gLz4KICAgICAgICB7IXNob3dSZXN1bHQgJiYgPGJ1dHRvbiBjbGFzc05hbWU9ImJ0bi1wcmltYXJ5IiBvbkNsaWNrPXtnZW5lcmF0ZX0gZGlzYWJsZWQ9eyFpbnB1dC50cmltKCl8fGxvYWRpbmd9Pntsb2FkaW5nID8gJ+KPsyBBSSDmkrDlhpnkuK0uLi4nIDogJ/CfmoAg5LiA6ZSu55Sf5oiQ56eN6I2J5paH5qGIJ308L2J1dHRvbj59CiAgICAgIDwvZGl2PgogICAgICB7c2hvd1Jlc3VsdCAmJiAoCiAgICAgICAgPGRpdiBjbGFzc05hbWU9ImNhcmQiPgogICAgICAgICAgPGRpdiBjbGFzc05hbWU9InJlc3VsdC1ib3giPgogICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0icmVzdWx0LWhlYWQiPgogICAgICAgICAgICAgIDxzcGFuIGNsYXNzTmFtZT0icmVzdWx0LWhlYWQtbGJsIj57c3R5bGVzLmZpbmQocz0+cy5pZD09PXN0eWxlKT8uZW1vaml9IHtzdHlsZXMuZmluZChzPT5zLmlkPT09c3R5bGUpPy5sYWJlbH3po47moLw8L3NwYW4+CiAgICAgICAgICAgICAgPGJ1dHRvbiBjbGFzc05hbWU9ImJ0bi1naG9zdCBidG4tc20iIG9uQ2xpY2s9eygpPT5uYXZpZ2F0b3IuY2xpcGJvYXJkLndyaXRlVGV4dChvdXRwdXQpfT7wn5OLIOWkjeWItjwvYnV0dG9uPgogICAgICAgICAgICA8L2Rpdj4KICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9InJlc3VsdC1ib2R5Ij57bG9hZGluZyA/IDxzcGFuIGNsYXNzTmFtZT0iZG90LWFuaW0iPuKXjyDnlJ/miJDkuK0uLi48L3NwYW4+IDogb3V0cHV0fTwvZGl2PgogICAgICAgICAgPC9kaXY+CiAgICAgICAgICA8YnV0dG9uIGNsYXNzTmFtZT0iYnRuLXByaW1hcnkiIG9uQ2xpY2s9e2dlbmVyYXRlfSBkaXNhYmxlZD17bG9hZGluZ30+8J+UhCDph43mlrDnlJ/miJA8L2J1dHRvbj4KICAgICAgICA8L2Rpdj4KICAgICAgKX0KICAgICAgPGRpdiBjbGFzc05hbWU9InRpcCI+8J+SoSDmj4/ov7Dotoror6bnu4bvvIxBSeeUn+aIkOaViOaenOi2iuWlveOAguWPr+WMheWQq++8muWVhuWTgeeJueeCuSArIOebruagh+eUqOaItyArIOS9v+eUqOWcuuaZryArIOS7t+agvOWumuS9jTwvZGl2PgogICAgPC9kaXY+CiAgKQp9CgpmdW5jdGlvbiBWaWRlb01vZHVsZSgpIHsKICBjb25zdCBbc2NlbmUsIHNldFNjZW5lXSA9IHVzZVN0YXRlKCd1bmJveCcpCiAgY29uc3QgW2lucHV0LCBzZXRJbnB1dF0gPSB1c2VTdGF0ZSgnJykKICBjb25zdCBbc2NyaXB0LCBzZXRTY3JpcHRdID0gdXNlU3RhdGUoJycpCiAgY29uc3QgW2xvYWRpbmcsIHNldExvYWRpbmddID0gdXNlU3RhdGUoZmFsc2UpCiAgY29uc3QgW3Nob3dTY3JpcHQsIHNldFNob3dTY3JpcHRdID0gdXNlU3RhdGUoZmFsc2UpCiAgY29uc3QgW2ltZywgc2V0SW1nXSA9IHVzZVN0YXRlPHN0cmluZ3xudWxsPihudWxsKQogIGNvbnN0IFtpbWdVcmwsIHNldEltZ1VybF0gPSB1c2VTdGF0ZTxzdHJpbmd8bnVsbD4obnVsbCkKICBjb25zdCBbdmlkZW9VcmwsIHNldFZpZGVvVXJsXSA9IHVzZVN0YXRlPHN0cmluZ3xudWxsPihudWxsKQogIGNvbnN0IFt2aWRlb0xvYWRpbmcsIHNldFZpZGVvTG9hZGluZ10gPSB1c2VTdGF0ZShmYWxzZSkKICBjb25zdCBmaWxlUmVmID0gdXNlUmVmPEhUTUxJbnB1dEVsZW1lbnQ+KG51bGwpCiAgY29uc3Qgc2NlbmVzID0gW3tpZDondW5ib3gnLGxhYmVsOiflvIDnrrHlsZXnpLonLGljb246J/Cfk6YnfSx7aWQ6J3N0eWxlJyxsYWJlbDon56m/5pCtL+aRhuaUvicsaWNvbjon8J+Rlyd9LHtpZDonZGV0YWlsJyxsYWJlbDon57uG6IqC54m55YaZJyxpY29uOifwn5SNJ30se2lkOidzY2VuZScsbGFiZWw6J+WcuuaZr+W4puWFpScsaWNvbjon8J+PoCd9XQoKICBjb25zdCBoYW5kbGVGaWxlID0gYXN5bmMgKGU6IFJlYWN0LkNoYW5nZUV2ZW50PEhUTUxJbnB1dEVsZW1lbnQ+KSA9PiB7CiAgICBjb25zdCBmID0gZS50YXJnZXQuZmlsZXM/LlswXTsgaWYgKCFmKSByZXR1cm4KICAgIGNvbnN0IHJlYWRlciA9IG5ldyBGaWxlUmVhZGVyKCkKICAgIHJlYWRlci5vbmxvYWQgPSBldiA9PiB7IHNldEltZyhldi50YXJnZXQ/LnJlc3VsdCBhcyBzdHJpbmcpOyBzZXRWaWRlb1VybChudWxsKSB9CiAgICByZWFkZXIucmVhZEFzRGF0YVVSTChmKQogICAgY29uc3QgZm9ybSA9IG5ldyBGb3JtRGF0YSgpOyBmb3JtLmFwcGVuZCgnZmlsZScsIGYpCiAgICB0cnkgeyBjb25zdCByZXMgPSBhd2FpdCBmZXRjaCgnL2FwaS91cGxvYWQnLCB7bWV0aG9kOidQT1NUJyxib2R5OmZvcm19KTsgY29uc3QgZGF0YSA9IGF3YWl0IHJlcy5qc29uKCk7IHNldEltZ1VybChkYXRhLnVybCkgfSBjYXRjaCB7fQogIH0KCiAgY29uc3QgZ2VuU2NyaXB0ID0gYXN5bmMgKCkgPT4gewogICAgaWYgKCFpbnB1dC50cmltKCkpIHJldHVybgogICAgc2V0TG9hZGluZyh0cnVlKTsgc2V0U2NyaXB0KCcnKTsgc2V0U2hvd1NjcmlwdCh0cnVlKQogICAgdHJ5IHsKICAgICAgY29uc3QgcmVzID0gYXdhaXQgZmV0Y2goJy9hcGkvYWkvY29weScsIHsgbWV0aG9kOidQT1NUJywgaGVhZGVyczp7J0NvbnRlbnQtVHlwZSc6J2FwcGxpY2F0aW9uL2pzb24nfSwgYm9keTogSlNPTi5zdHJpbmdpZnkoeyBwcm9kdWN0OiBpbnB1dCArICfvvIzlnLrmma/nsbvlnovvvJonICsgc2NlbmVzLmZpbmQocz0+cy5pZD09PXNjZW5lKT8ubGFiZWwsIHBsYXRmb3JtOiAnZG91eWluJyB9KSB9KQogICAgICBjb25zdCBkYXRhID0gYXdhaXQgcmVzLmpzb24oKTsgc2V0U2NyaXB0KGRhdGEudGV4dCB8fCAn55Sf5oiQ5aSx6LSlJykKICAgIH0gY2F0Y2ggeyBzZXRTY3JpcHQoJ+e9kee7nOmUmeivrycpIH0KICAgIHNldExvYWRpbmcoZmFsc2UpCiAgfQoKICBjb25zdCBnZW5WaWRlbyA9IGFzeW5jICgpID0+IHsKICAgIGlmICghaW1nVXJsKSByZXR1cm4KICAgIHNldFZpZGVvTG9hZGluZyh0cnVlKTsgc2V0VmlkZW9VcmwobnVsbCkKICAgIHRyeSB7CiAgICAgIGNvbnN0IHJlcyA9IGF3YWl0IGZldGNoKCcvYXBpL2FpL3ZpZGVvJywgeyBtZXRob2Q6J1BPU1QnLCBoZWFkZXJzOnsnQ29udGVudC1UeXBlJzonYXBwbGljYXRpb24vanNvbid9LCBib2R5OiBKU09OLnN0cmluZ2lmeSh7IGltYWdlVXJsOiBpbWdVcmwsIGR1cmF0aW9uOiA2IH0pIH0pCiAgICAgIGNvbnN0IGRhdGEgPSBhd2FpdCByZXMuanNvbigpOyBzZXRWaWRlb1VybChkYXRhLnVybCkKICAgIH0gY2F0Y2ggeyBzZXRWaWRlb1VybCgnaHR0cHM6Ly9waWNzdW0ucGhvdG9zL3NlZWQvdmlkJytEYXRlLm5vdygpKycvNjQwLzM2MCcpIH0KICAgIHNldFZpZGVvTG9hZGluZyhmYWxzZSkKICB9CgogIHJldHVybiAoCiAgICA8ZGl2IGNsYXNzTmFtZT0ibW9kdWxlIj4KICAgICAgPGRpdiBjbGFzc05hbWU9ImNhcmQiPgogICAgICAgIDxkaXYgY2xhc3NOYW1lPSJjYXJkLXRpdGxlIj7wn46sIEFJIOefreinhumikeiEmuacrCA8c3BhbiBjbGFzc05hbWU9InRhZyI+TWluaU1heCBBSTwvc3Bhbj48L2Rpdj4KICAgICAgICA8ZGl2IGNsYXNzTmFtZT0iY2hpcC1sYWJlbCI+6YCJ5oup6KeG6aKR5Zy65pmvPC9kaXY+CiAgICAgICAgPGRpdiBjbGFzc05hbWU9InNjZW5lLWdyaWQiPntzY2VuZXMubWFwKHM9PjxkaXYga2V5PXtzLmlkfSBjbGFzc05hbWU9e2BzY2VuZS1jYXJkICR7c2NlbmU9PT1zLmlkPydvbic6Jyd9YH0gb25DbGljaz17KCk9PnNldFNjZW5lKHMuaWQpfT48c3BhbiBjbGFzc05hbWU9InNjZW5lLWljb24iPntzLmljb259PC9zcGFuPjxzcGFuPntzLmxhYmVsfTwvc3Bhbj48L2Rpdj4pfTwvZGl2PgogICAgICAgIDx0ZXh0YXJlYSBjbGFzc05hbWU9InRhIiByb3dzPXszfSBwbGFjZWhvbGRlcj0i5o+P6L+w5L2g55qE5ZWG5ZOB77yM5L6L5aaC77ya6Z+p57O756KO6Iqx6L+e6KGj6KOZ77yM5aSP5a2j5paw5qy+Li4uIiB2YWx1ZT17aW5wdXR9IG9uQ2hhbmdlPXtlPT5zZXRJbnB1dChlLnRhcmdldC52YWx1ZSl9IC8+CiAgICAgICAgPGJ1dHRvbiBjbGFzc05hbWU9ImJ0bi1wcmltYXJ5IiBvbkNsaWNrPXtnZW5TY3JpcHR9IGRpc2FibGVkPXshaW5wdXQudHJpbSgpfHxsb2FkaW5nfT57bG9hZGluZyA/ICfij7MgQUkg55Sf5oiQ6ISa5pys5LitLi4uJyA6ICfwn5qAIOeUn+aIkOefreinhumikeiEmuacrCd9PC9idXR0b24+CiAgICAgIDwvZGl2PgogICAgICB7c2hvd1NjcmlwdCAmJiAoCiAgICAgICAgPGRpdiBjbGFzc05hbWU9ImNhcmQiPgogICAgICAgICAgPGRpdiBjbGFzc05hbWU9InJlc3VsdC1ib3giPgogICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0icmVzdWx0LWhlYWQiPjxzcGFuIGNsYXNzTmFtZT0icmVzdWx0LWhlYWQtbGJsIj7wn46sIOinhumikeiEmuacrDwvc3Bhbj48YnV0dG9uIGNsYXNzTmFtZT0iYnRuLWdob3N0IGJ0bi1zbSIgb25DbGljaz17KCk9Pm5hdmlnYXRvci5jbGlwYm9hcmQud3JpdGVUZXh0KHNjcmlwdCl9PvCfk4sg5aSN5Yi2PC9idXR0b24+PC9kaXY+CiAgICAgICAgICAgIDxwcmUgY2xhc3NOYW1lPSJyZXN1bHQtYm9keSIgc3R5bGU9e3t3aGl0ZVNwYWNlOidwcmUtd3JhcCcsZm9udFNpemU6MTN9fT57bG9hZGluZz8n5q2j5Zyo55Sf5oiQLi4uJzpzY3JpcHR9PC9wcmU+CiAgICAgICAgICA8L2Rpdj4KICAgICAgICAgIDxidXR0b24gY2xhc3NOYW1lPSJidG4tcHJpbWFyeSIgb25DbGljaz17Z2VuU2NyaXB0fSBkaXNhYmxlZD17bG9hZGluZ30+8J+UhCDph43mlrDnlJ/miJA8L2J1dHRvbj4KICAgICAgICA8L2Rpdj4KICAgICAgKX0KICAgICAgPGRpdiBjbGFzc05hbWU9ImRpdmlkZXIiPuKAlCDov5vpmLbvvJpBSSDomZrmi5/mqKHnibnlsZXnpLrop4bpopEg4oCUPC9kaXY+CiAgICAgIDxkaXYgY2xhc3NOYW1lPSJjYXJkIj4KICAgICAgICA8ZGl2IGNsYXNzTmFtZT0idXBsb2FkLXpvbmUiIG9uQ2xpY2s9eygpPT5maWxlUmVmLmN1cnJlbnQ/LmNsaWNrKCl9IHN0eWxlPXtpbWc/e3BhZGRpbmc6JzEycHgnLGJvcmRlclN0eWxlOidzb2xpZCd9Ont9fT4KICAgICAgICAgIHtpbWcgPyA8aW1nIHNyYz17aW1nfSBjbGFzc05hbWU9InByZXZpZXctaW1nIiBhbHQ9IumihOiniCIgLz4gOiA8ZGl2PjxkaXYgY2xhc3NOYW1lPSJ1cGxvYWQtaWNvbiI+8J+RlzwvZGl2PjxkaXYgY2xhc3NOYW1lPSJ1cGxvYWQtdDEiPuS4iuS8oOWVhuWTgeWbvueJhzwvZGl2PjxkaXYgY2xhc3NOYW1lPSJ1cGxvYWQtdDIiPueUn+aIkCBBSSDomZrmi5/mqKHnibnlsZXnpLrop4bpopE8L2Rpdj48L2Rpdj59CiAgICAgICAgPC9kaXY+CiAgICAgICAgPGlucHV0IHJlZj17ZmlsZVJlZn0gdHlwZT0iZmlsZSIgYWNjZXB0PSJpbWFnZS8qIiBzdHlsZT17e2Rpc3BsYXk6J25vbmUnfX0gb25DaGFuZ2U9e2hhbmRsZUZpbGV9IC8+CiAgICAgICAgPGJ1dHRvbiBjbGFzc05hbWU9ImJ0bi1wcmltYXJ5IiBvbkNsaWNrPXtnZW5WaWRlb30gZGlzYWJsZWQ9eyFpbWdVcmx8fHZpZGVvTG9hZGluZ30+e3ZpZGVvTG9hZGluZyA/ICfij7Mg6KeG6aKR55Sf5oiQ5Lit77yI6ZyAMTAtMzDnp5LvvIkuLi4nIDogJ/CfjpnvuI8g55Sf5oiQIEFJIOiZmuaLn+aooeeJueinhumikSd9PC9idXR0b24+CiAgICAgICAge3ZpZGVvVXJsICYmIDx2aWRlbyBzcmM9e3ZpZGVvVXJsfSBjb250cm9scyBjbGFzc05hbWU9InZpZGVvLWVsIiBzdHlsZT17e21hcmdpblRvcDoxMn19IC8+fQogICAgICA8L2Rpdj4KICAgIDwvZGl2PgogICkKfQo=
+'use client'
+import { useState, useRef, useCallback } from 'react'
+import './page.css'
+
+// ─── 常量 ────────────────────────────────────────────────
+const ANGLE_MAP  = ['front','side','back','angle45','top','detail']
+const ANGLE_LABELS = ['正面图','侧面图','背面图','45°视角','俯视图','细节图']
+const STYLE_OPTS = [
+  { id:'xiaohongshu' as const, label:'小红书', emoji:'📕' },
+  { id:'douyin'     as const, label:'抖音',   emoji:'🎵' },
+  { id:'weibo'      as const, label:'微博',   emoji:'🌟' },
+]
+const SCENE_OPTS = [
+  { id:'unbox',  label:'开箱展示', icon:'📦' },
+  { id:'style',  label:'穿搭/摆放', icon:'👗' },
+  { id:'detail', label:'细节特写', icon:'🔍' },
+  { id:'scene',  label:'场景带入', icon:'🏠' },
+]
+
+// ─── 工具 ────────────────────────────────────────────────
+const sleep = (ms: number) => new Promise(r => setTimeout(r, ms))
+
+function toast(msg: string, ms = 2000) {
+  const el = document.getElementById('toast')
+  if (!el) return
+  el.textContent = msg
+  el.style.display = 'block'
+  setTimeout(() => { el.style.display = 'none' }, ms)
+}
+
+// ─── 主组件 ──────────────────────────────────────────────
+export default function AppPage() {
+  const [tab, setTab] = useState<'photo'|'copy'|'video'>('photo')
+  return (
+    <div className="app">
+      <header className="hdr">
+        <div className="hdr-logo"><span>🛒</span> AI电商内容工坊</div>
+        <div className="hdr-badge">MiniMax AI</div>
+      </header>
+      <div className="page">
+        {tab === 'photo' && <PhotoModule key="photo" />}
+        {tab === 'copy'  && <CopyModule  key="copy" />}
+        {tab === 'video' && <VideoModule key="video" />}
+      </div>
+      <div className="tabbar">
+        {[
+          { id:'photo' as const, icon:'📸', label:'商品主图' },
+          { id:'copy'  as const, icon:'✍️', label:'种草文案' },
+          { id:'video' as const, icon:'🎬', label:'视频脚本' },
+        ].map(t => (
+          <button key={t.id} className={`tab-btn ${tab===t.id?'on':''}`} onClick={()=>setTab(t.id)}>
+            <span className="tab-icon">{t.icon}</span>
+            <span className="tab-label">{t.label}</span>
+          </button>
+        ))}
+      </div>
+      <div id="toast" className="toast" style={{display:'none'}} />
+    </div>
+  )
+}
+
+// ─── 商品主图模块 ─────────────────────────────────────────
+function PhotoModule() {
+  const [img,       setImg]       = useState<string|null>(null)
+  const [imgUrl,    setImgUrl]    = useState<string|null>(null)
+  const [sel,       setSel]       = useState([true,false,false,true,false,false])
+  const [results,   setResults]   = useState<Record<string,string>>({})
+  const [errors,    setErrors]    = useState<Record<string,string>>({})
+  const [loading,   setLoading]   = useState(false)
+  const [view,      setView]      = useState<'create'|'result'>('create')
+  const [progress,  setProgress]  = useState(0)
+  const fileRef = useRef<HTMLInputElement>(null)
+
+  const toggle = (i: number) => {
+    const s = [...sel]; s[i]=!s[i]; setSel(s)
+  }
+
+  const handleFile = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const f = e.target.files?.[0]
+    if (!f) return
+    if (f.size > 10 * 1024 * 1024) { toast('图片不能超过 10MB'); return }
+    const reader = new FileReader()
+    reader.onload = ev => { setImg(ev.target?.result as string); setResults({}); setErrors({}); setView('create') }
+    reader.readAsDataURL(f)
+    // 上传获取公开 URL
+    const form = new FormData()
+    form.append('file', f)
+    try {
+      const res = await fetch('/api/upload', { method:'POST', body:form })
+      const data = await res.json()
+      if (data.url) setImgUrl(data.url)
+      else toast('图片上传失败，AI生成可能受影响')
+    } catch { toast('上传服务暂不可用') }
+  }, [])
+
+  const generate = useCallback(async () => {
+    if (!imgUrl && !img) { toast('请先上传商品图片'); return }
+    setLoading(true)
+    setProgress(0)
+    setResults({})
+    setErrors({})
+    const selected = ANGLE_MAP.filter((_, i) => sel[i])
+    const out: Record<string,string> = {}
+    const errs: Record<string,string> = {}
+
+    for (let idx = 0; idx < selected.length; idx++) {
+      const id = selected[idx]
+      setProgress(Math.round((idx / selected.length) * 100))
+      try {
+        const res = await fetch('/api/ai/image', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ imageUrl: imgUrl || img, angle: id }),
+        })
+        const data = await res.json()
+        if (data.url) out[id] = data.url
+        else errs[id] = data.error || '生成失败'
+      } catch (e: unknown) {
+        errs[id] = '网络错误，请检查网络'
+      }
+    }
+
+    // demo 模式：无 API Key 时用占位图演示
+    if (Object.keys(out).length === 0 && selected.length > 0) {
+      for (const id of selected) {
+        out[id] = `https://picsum.photos/seed/${id}${Date.now()}/480/480`
+        await sleep(400)
+      }
+    }
+
+    setResults(out)
+    setErrors(errs)
+    setProgress(100)
+    setLoading(false)
+    setView('result')
+  }, [imgUrl, img, sel])
+
+  const reset = () => {
+    setImg(null); setImgUrl(null); setResults({}); setErrors({})
+    setSel([true,false,false,true,false,false])
+    if (fileRef.current) fileRef.current.value = ''
+    setView('create')
+  }
+
+  return (
+    <div className="module">
+      {view === 'create' ? (
+        <div className="card">
+          <div className="card-title">
+            📸 商品多角度图 <span className="tag">MiniMax AI</span>
+          </div>
+
+          <div className="upload-zone" onClick={()=>fileRef.current?.click()}>
+            {img ? (
+              <div className="img-preview-wrap">
+                <img src={img} className="preview-img" alt="预览" />
+                <div className="upload-overlay">点击更换图片</div>
+              </div>
+            ) : (
+              <div>
+                <div className="upload-icon">🖼️</div>
+                <div className="upload-t1">点击上传商品图片</div>
+                <div className="upload-t2">支持 JPG/PNG/WebP，建议白底图</div>
+              </div>
+            )}
+          </div>
+          <input ref={fileRef} type="file" accept="image/*" style={{display:'none'}} onChange={handleFile} />
+
+          {img && (
+            <button className="btn-ghost btn-sm reset-btn" onClick={reset}>↺ 重新上传</button>
+          )}
+
+          <div className="chip-label">选择生成视角（可多选）</div>
+          <div className="chip-grid">
+            {ANGLE_LABELS.map((l, i) => (
+              <div key={i} className={`chip ${sel[i]?'on':''}`} onClick={()=>toggle(i)}>
+                <span className="chip-dot">{sel[i]?'✓':''}</span>{l}
+              </div>
+            ))}
+          </div>
+          <div className="info-row">已选 <b>{sel.filter(Boolean).length}</b> 个视角</div>
+
+          {loading && (
+            <div className="progress-wrap">
+              <div className="progress-bar">
+                <div className="progress-fill" style={{width:`${progress}%`}} />
+              </div>
+              <div className="progress-text">⏳ AI 正在生成中... {progress}%</div>
+            </div>
+          )}
+
+          <button
+            className={`btn-primary ${(!img || loading) ? 'disabled' : ''}`}
+            onClick={generate}
+            disabled={!img || loading}
+          >
+            {loading ? `⏳ 生成中 ${progress}%...` : `🎯 生成 ${sel.filter(Boolean).length} 张多角度图`}
+          </button>
+
+          <div className="api-tip">💡 配置 MINIMAX_API_KEY 后可生成真实 AI 商品图</div>
+        </div>
+      ) : (
+        <div className="card">
+          <div className="result-header">
+            <div className="muted-text">🖼️ 生成结果（点击查看大图）</div>
+            <button className="btn-ghost btn-sm" onClick={()=>setView('create')}>← 继续生成</button>
+          </div>
+
+          <div className="result-grid">
+            {Object.entries(results).map(([id, url]) => {
+              const label = ANGLE_LABELS[ANGLE_MAP.indexOf(id)]
+              return (
+                <div key={id} className="rgrid-item">
+                  <a href={url} target="_blank" rel="noopener noreferrer">
+                    <img src={url} className="rgrid-img" alt={label} loading="lazy" />
+                  </a>
+                  <div className="rgrid-lbl">{label}</div>
+                </div>
+              )
+            })}
+          </div>
+
+          {Object.keys(errors).length > 0 && (
+            <div className="error-box">
+              <div className="error-title">⚠️ 部分生成失败</div>
+              {Object.entries(errors).map(([id, msg]) => (
+                <div key={id} className="error-item">
+                  {ANGLE_LABELS[ANGLE_MAP.indexOf(id)]}：{msg}
+                  <button className="btn-ghost btn-sm" onClick={async () => {
+                    const res = await fetch('/api/ai/image', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ imageUrl: imgUrl||img, angle:id }) })
+                    const data = await res.json()
+                    if (data.url) { setResults(prev=>({...prev,[id]:data.url})); setErrors(prev=>{const n={...prev};delete n[id];return n}) }
+                  }}>重试</button>
+                </div>
+              ))}
+            </div>
+          )}
+
+          <button className="btn-primary" onClick={generate} disabled={loading}>
+            🔄 重新生成
+          </button>
+        </div>
+      )}
+    </div>
+  )
+}
+
+// ─── 种草文案模块 ─────────────────────────────────────────
+function CopyModule() {
+  const [style, setStyle]     = useState<'xiaohongshu'|'douyin'|'weibo'>('xiaohongshu')
+  const [input, setInput]     = useState('')
+  const [output, setOutput]   = useState('')
+  const [loading, setLoading]  = useState(false)
+  const [error,   setError]   = useState('')
+  const [copied, setCopied]  = useState(false)
+
+  const generate = async () => {
+    if (!input.trim()) { toast('请输入商品描述'); return }
+    setLoading(true); setOutput(''); setError('')
+    try {
+      const res = await fetch('/api/ai/copy', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ product: input, platform: style }),
+      })
+      const data = await res.json()
+      if (data.error) { setError(data.error); return }
+      setOutput(data.text || '')
+    } catch { setError('网络错误，请检查网络连接') }
+    setLoading(false)
+  }
+
+  const copy = () => {
+    navigator.clipboard.writeText(output).then(() => {
+      setCopied(true)
+      toast('已复制到剪贴板')
+      setTimeout(() => setCopied(false), 2000)
+    })
+  }
+
+  return (
+    <div className="module">
+      <div className="card">
+        <div className="card-title">✍️ AI 种草文案 <span className="tag">MiniMax LLM</span></div>
+
+        <div className="style-tabs">
+          {STYLE_OPTS.map(s => (
+            <button key={s.id} className={`style-tab ${style===s.id?'on':''}`} onClick={()=>setStyle(s.id)}>
+              <span>{s.emoji}</span>{s.label}
+            </button>
+          ))}
+        </div>
+
+        <textarea
+          className="ta"
+          rows={4}
+          placeholder={`描述你的商品，越详细效果越好~\n\n示例：${style==='xiaohongshu'?'韩系碎花连衣裙，夏季新款，透气轻薄，适合小个子女生，浅绿色' : style==='douyin'?'无线蓝牙耳机，主动降噪，续航30小时，游戏低延迟' : '人体工学办公椅，可调节腰靠，久坐不累'}`}
+          value={input}
+          onChange={e=>setInput(e.target.value)}
+          onKeyDown={e => { if (e.key==='Enter' && e.ctrlKey) generate() }}
+        />
+
+        {error && <div className="error-box" style={{marginBottom:12}}><span>❌ </span>{error}</div>}
+
+        {loading ? (
+          <div className="skeleton-box">
+            <div className="skeleton-line" style={{width:'95%'}} />
+            <div className="skeleton-line" style={{width:'88%'}} />
+            <div className="skeleton-line" style={{width:'92%'}} />
+            <div className="skeleton-line" style={{width:'70%'}} />
+          </div>
+        ) : output ? (
+          <button className="btn-primary" onClick={generate}>🔄 重新生成</button>
+        ) : (
+          <button className="btn-primary" onClick={generate} disabled={!input.trim()||loading}>
+            🚀 一键生成种草文案 {input.trim()&&' Ctrl+Enter'}
+          </button>
+        )}
+      </div>
+
+      {output && (
+        <div className="card">
+          <div className="result-box">
+            <div className="result-head">
+              <span className="result-head-lbl">{STYLE_OPTS.find(s=>s.id===style)?.emoji} {STYLE_OPTS.find(s=>s.id===style)?.label}风格</span>
+              <button className={`btn-ghost btn-sm ${copied?'copied':''}`} onClick={copy}>
+                {copied ? '✅ 已复制' : '📋 复制'}
+              </button>
+            </div>
+            <div className="result-body copy-result">{loading ? '' : output}</div>
+          </div>
+        </div>
+      )}
+
+      <div className="tip">
+        💡 <strong>小技巧：</strong>描述越详细（品类+特点+人群+场景），AI 生成效果越好。支持 Ctrl+Enter 快捷生成。
+      </div>
+    </div>
+  )
+}
+
+// ─── 视频脚本模块 ─────────────────────────────────────────
+function VideoModule() {
+  const [scene,      setScene]      = useState('unbox')
+  const [input,      setInput]      = useState('')
+  const [script,     setScript]     = useState('')
+  const [sLoading,  setSLoading]  = useState(false)
+  const [sError,     setSError]    = useState('')
+  const [img,        setImg]        = useState<string|null>(null)
+  const [imgUrl,     setImgUrl]     = useState<string|null>(null)
+  const [videoUrl,   setVideoUrl]   = useState<string|null>(null)
+  const [vLoading,   setVLoading]  = useState(false)
+  const [vError,     setVError]    = useState('')
+  const [scriptCopied, setScriptCopied] = useState(false)
+  const fileRef = useRef<HTMLInputElement>(null)
+
+  const handleFile = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const f = e.target.files?.[0]
+    if (!f) return
+    if (f.size > 10 * 1024 * 1024) { toast('图片不能超过 10MB'); return }
+    const reader = new FileReader()
+    reader.onload = ev => { setImg(ev.target?.result as string); setVideoUrl(null); setVError('') }
+    reader.readAsDataURL(f)
+    const form = new FormData(); form.append('file', f)
+    try {
+      const res = await fetch('/api/upload', { method:'POST', body:form })
+      const data = await res.json()
+      if (data.url) setImgUrl(data.url)
+    } catch {}
+  }, [])
+
+  const genScript = async () => {
+    if (!input.trim()) { toast('请输入商品描述'); return }
+    setSLoading(true); setScript(''); setSError('')
+    try {
+      const res = await fetch('/api/ai/copy', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ product: input + `（视频场景：${SCENE_OPTS.find(s=>s.id===scene)?.label}）`, platform: 'douyin' }),
+      })
+      const data = await res.json()
+      if (data.error) { setSError(data.error); return }
+      setScript(data.text || '')
+    } catch { setSError('网络错误') }
+    setSLoading(false)
+  }
+
+  const genVideo = async () => {
+    if (!imgUrl && !img) { toast('请先上传商品图片'); return }
+    setVLoading(true); setVideoUrl(null); setVError('')
+    toast('视频生成中，预计需要 10-30 秒...')
+    try {
+      const res = await fetch('/api/ai/video', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ imageUrl: imgUrl || img, duration: 6 }),
+      })
+      const data = await res.json()
+      if (data.error) { setVError(data.error); return }
+      setVideoUrl(data.url)
+      toast('🎉 视频生成完成！')
+    } catch { setVError('网络错误，请重试') }
+    setVLoading(false)
+  }
+
+  return (
+    <div className="module">
+      <div className="card">
+        <div className="card-title">🎬 AI 短视频脚本 <span className="tag">MiniMax AI</span></div>
+
+        <div className="chip-label">选择视频场景</div>
+        <div className="scene-grid">
+          {SCENE_OPTS.map(s => (
+            <div key={s.id} className={`scene-card ${scene===s.id?'on':''}`} onClick={()=>setScene(s.id)}>
+              <span className="scene-icon">{s.icon}</span><span>{s.label}</span>
+            </div>
+          ))}
+        </div>
+
+        <textarea
+          className="ta"
+          rows={3}
+          placeholder="描述你的商品，例如：韩系碎花连衣裙，夏季新款，透气轻薄，适合小个子..."
+          value={input}
+          onChange={e=>setInput(e.target.value)}
+          onKeyDown={e => { if (e.key==='Enter' && e.ctrlKey) genScript() }}
+        />
+
+        {sError && <div className="error-box" style={{marginBottom:12}}><span>❌ </span>{sError}</div>}
+
+        {sLoading ? (
+          <div className="skeleton-box">
+            <div className="skeleton-line" style={{width:'90%'}} />
+            <div className="skeleton-line" style={{width:'75%'}} />
+            <div className="skeleton-line" style={{width:'85%'}} />
+          </div>
+        ) : script ? (
+          <button className="btn-primary" onClick={genScript}>🔄 重新生成</button>
+        ) : (
+          <button className="btn-primary" onClick={genScript} disabled={!input.trim()||sLoading}>
+            🚀 生成短视频脚本
+          </button>
+        )}
+      </div>
+
+      {script && (
+        <div className="card">
+          <div className="result-box">
+            <div className="result-head">
+              <span className="result-head-lbl">🎬 {SCENE_OPTS.find(s=>s.id===scene)?.label} · 脚本</span>
+              <button className={`btn-ghost btn-sm ${scriptCopied?'copied':''}`}
+                onClick={()=>{ navigator.clipboard.writeText(script); setScriptCopied(true); toast('已复制'); setTimeout(()=>setScriptCopied(false),2000) }}>
+                {scriptCopied?'✅ 已复制':'📋 复制'}
+              </button>
+            </div>
+            <pre className="result-body script-text">{script}</pre>
+          </div>
+        </div>
+      )}
+
+      <div className="divider">— 进阶：AI 虚拟模特展示视频 —</div>
+
+      <div className="card">
+        <div className="upload-zone" onClick={()=>fileRef.current?.click()}
+          style={img?{padding:'12px',borderStyle:'solid'}:{}}>
+          {img ? (
+            <div className="img-preview-wrap">
+              <img src={img} className="preview-img" alt="预览" style={{maxHeight:140}} />
+              <div className="upload-overlay">点击更换图片</div>
+            </div>
+          ) : (
+            <div><div className="upload-icon">👗</div><div className="upload-t1">上传商品图片</div><div className="upload-t2">生成 AI 虚拟模特展示视频</div></div>
+          )}
+        </div>
+        <input ref={fileRef} type="file" accept="image/*" style={{display:'none'}} onChange={handleFile} />
+
+        {vError && <div className="error-box" style={{marginBottom:12}}><span>❌ </span>{vError}</div>}
+
+        <button
+          className={`btn-primary ${(!img || vLoading) ? '' : ''}`}
+          onClick={genVideo}
+          disabled={!img || vLoading}
+        >
+          {vLoading ? '⏳ AI 视频生成中（需 10-30 秒）...' : '🎙️ 生成 AI 虚拟模特视频'}
+        </button>
+
+        {videoUrl && (
+          <div className="video-wrap">
+            <video key={videoUrl} src={videoUrl} controls className="video-el" />
+          </div>
+        )}
+
+        <div className="api-tip">💡 配置 MINIMAX_API_KEY 后可生成真实 AI 视频</div>
+      </div>
+    </div>
+  )
+}

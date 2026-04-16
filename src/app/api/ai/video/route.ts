@@ -1,1 +1,19 @@
-aW1wb3J0IHsgTmV4dFJlcXVlc3QsIE5leHRSZXNwb25zZSB9IGZyb20gJ25leHQvc2VydmVyJwppbXBvcnQgeyBnZW5lcmF0ZVZpZGVvIH0gZnJvbSAnLi4vLi4vLi4vLi4vbGliL2FpJwoKZXhwb3J0IGFzeW5jIGZ1bmN0aW9uIFBPU1QocmVxOiBOZXh0UmVxdWVzdCkgewogIHRyeSB7CiAgICBjb25zdCB7IGltYWdlVXJsLCBwcm9tcHQsIGR1cmF0aW9uIH0gPSBhd2FpdCByZXEuanNvbigpCiAgICBpZiAoIWltYWdlVXJsKSByZXR1cm4gTmV4dFJlc3BvbnNlLmpzb24oeyBlcnJvcjogJ+e8uuWwkeWbvueJhycgfSwgeyBzdGF0dXM6IDQwMCB9KQoKICAgIGNvbnN0IGRlZmF1bHRQcm9tcHQgPSAnUHJvZHVjdCBzaG93Y2FzZSB2aWRlbywgcm90YXRpbmcgdmlldywgcHJvZmVzc2lvbmFsIGUtY29tbWVyY2Ugc3R5bGUsIGNsZWFuIGJhY2tncm91bmQnCiAgICBjb25zdCBvdXRwdXRGaWxlID0gYC90bXAvYmluZ29fdmlkZW9fJHtEYXRlLm5vdygpfS5tcDRgCiAgICBjb25zdCB1cmwgPSBhd2FpdCBnZW5lcmF0ZVZpZGVvKHsKICAgICAgcHJvbXB0OiBwcm9tcHQgfHwgZGVmYXVsdFByb21wdCwKICAgICAgaW1hZ2VGaWxlOiBpbWFnZVVybCwKICAgICAgb3V0cHV0RmlsZSwKICAgICAgZHVyYXRpb246IGR1cmF0aW9uIHx8IDYsCiAgICB9KQogICAgcmV0dXJuIE5leHRSZXNwb25zZS5qc29uKHsgc3VjY2VzczogdHJ1ZSwgdXJsIH0pCiAgfSBjYXRjaCAoZTogdW5rbm93bikgewogICAgY29uc3QgbXNnID0gZSBpbnN0YW5jZW9mIEVycm9yID8gZS5tZXNzYWdlIDogU3RyaW5nKGUpCiAgICByZXR1cm4gTmV4dFJlc3BvbnNlLmpzb24oeyBlcnJvcjogbXNnIH0sIHsgc3RhdHVzOiA1MDAgfSkKICB9Cn0K
+import { NextRequest, NextResponse } from 'next/server'
+import { generateProductVideo } from '../../../../lib/ai'
+
+export const runtime = 'nodejs'
+
+export async function POST(req: NextRequest) {
+  const apiKey = process.env.MINIMAX_API_KEY || process.env.NEXT_PUBLIC_MINIMAX_API_KEY
+  if (!apiKey) return NextResponse.json({ error: 'MINIMAX_API_KEY 未配置' }, { status: 503 })
+  try {
+    const { imageUrl, duration } = await req.json()
+    if (!imageUrl) return NextResponse.json({ error: '缺少商品图片URL' }, { status: 400 })
+    const result = await generateProductVideo(imageUrl, apiKey, duration || 6)
+    return NextResponse.json({ success: true, url: result.url })
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : '生成失败，请重试'
+    console.error('[AI Video]', msg)
+    return NextResponse.json({ error: msg }, { status: 500 })
+  }
+}
