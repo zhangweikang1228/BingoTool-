@@ -1,20 +1,28 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { generateProductImage } from '../../../../lib/ai'
-
-export const runtime = 'nodejs'
+import { generateImage } from '../../../../lib/ai'
+import path from 'path'
+import { writeFileSync } from 'fs'
 
 export async function POST(req: NextRequest) {
-  const apiKey = process.env.MINIMAX_API_KEY || process.env.NEXT_PUBLIC_MINIMAX_API_KEY
-  if (!apiKey) return NextResponse.json({ error: 'MINIMAX_API_KEY 未配置' }, { status: 503 })
   try {
     const { imageUrl, angle } = await req.json()
-    if (!imageUrl) return NextResponse.json({ error: '缺少商品图片URL' }, { status: 400 })
-    if (!angle) return NextResponse.json({ error: '缺少角度参数' }, { status: 400 })
-    const result = await generateProductImage(imageUrl, angle, apiKey)
-    return NextResponse.json({ success: true, url: result.url })
+    if (!imageUrl) return NextResponse.json({ error: '缺少图片' }, { status: 400 })
+
+    const anglePrompts: Record<string, string> = {
+      front: 'Front view of the product, centered, clean white background, professional e-commerce photography, high quality',
+      side: 'Side view (90°), product facing right, clean white background, same product identity as reference photo',
+      back: 'Back view, centered, clean white background, same product style as reference',
+      angle45: '45-degree angle view, product slightly rotated, clean white background, professional e-commerce photo',
+      top: 'Top-down overhead view, looking straight down at the product, clean white background',
+      detail: 'Close-up macro detail view showing texture and quality, shallow depth of field, white background, premium feel',
+    }
+
+    const prompt = anglePrompts[angle] || anglePrompts.angle45
+    const outputFile = `/tmp/bingo_${angle}_${Date.now()}.png`
+    const url = await generateImage({ prompt, inputUrls: [imageUrl], outputFile, aspectRatio: '1:1' })
+    return NextResponse.json({ success: true, url })
   } catch (e: unknown) {
-    const msg = e instanceof Error ? e.message : '生成失败，请重试'
-    console.error('[AI Image]', msg)
+    const msg = e instanceof Error ? e.message : String(e)
     return NextResponse.json({ error: msg }, { status: 500 })
   }
 }
