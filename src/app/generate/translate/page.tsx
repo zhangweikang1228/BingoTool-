@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 
 const languages = [
@@ -19,13 +19,21 @@ export default function TranslatePage() {
   const [targetLang, setTargetLang] = useState('en')
   const [translating, setTranslating] = useState(false)
   const [result, setResult] = useState('')
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+  useEffect(() => {
+    if (!document.cookie.includes('user_id=')) {
+      window.location.href = '/login'
+    } else {
+      setIsLoggedIn(true)
+    }
+  }, [])
 
   const translate = async () => {
     if (!text) return
     
     setTranslating(true)
     
-    // 模拟翻译API
     const lang = languages.find(l => l.id === targetLang)
     await new Promise(resolve => setTimeout(resolve, 1500))
     
@@ -34,91 +42,117 @@ export default function TranslatePage() {
     setTranslating(false)
   }
 
+  const handleLogout = () => {
+    document.cookie = 'user_id=;expires=Thu, 01 Jan 1970 00:00:00 GMT'
+    window.location.href = '/login'
+  }
+
+  if (!isLoggedIn) {
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
+        <p>正在跳转登录页...</p>
+      </div>
+    )
+  }
+
   return (
     <>
       <nav className="navbar">
         <div className="container">
-          <Link href="/" className="logo">BingoTool</Link>
+          <Link href="/" className="logo">
+            <div className="logo-icon">B</div>
+            BingoTool
+          </Link>
           <ul className="nav-links">
             <li><Link href="/dashboard">仪表盘</Link></li>
             <li><Link href="/generate/image">商品图</Link></li>
             <li><Link href="/generate/text">种草文案</Link></li>
             <li><Link href="/generate/model">虚拟模特</Link></li>
-            <li><Link href="/generate/translate" style={{ color: '#6366f1' }}>翻译</Link></li>
+            <li><Link href="/generate/translate" className="active">翻译</Link></li>
           </ul>
+          <button className="btn btn-secondary" onClick={handleLogout}>退出</button>
         </div>
       </nav>
 
-      <div className="container generate-page">
-        <div className="generate-header">
-          <h1>多语言翻译</h1>
+      <div className="generate-page">
+        <div className="page-header">
+          <h1>🌐 多语言翻译</h1>
           <p>一键翻译商品内容，支持15+语种</p>
         </div>
 
         <div className="generate-container">
           {/* 输入面板 */}
-          <div className="input-panel">
-            <h3 className="panel-title">输入内容</h3>
-            
-            <div className="form-group">
-              <label>源文本</label>
-              <textarea
-                className="textarea"
-                placeholder="请输入需要翻译的内容..."
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-              />
+          <div className="panel">
+            <div className="panel-header">
+              <div className="panel-header-icon">📄</div>
+              <h3>输入内容</h3>
             </div>
+            <div className="panel-body">
+              <div className="form-group">
+                <label className="form-label">源文本</label>
+                <textarea
+                  className="form-input"
+                  placeholder="请输入需要翻译的内容..."
+                  style={{ minHeight: '150px', resize: 'vertical' }}
+                  value={text}
+                  onChange={(e) => setText(e.target.value)}
+                />
+              </div>
 
-            <div className="form-group">
-              <label>目标语言</label>
-              <select 
-                className="select" 
-                value={targetLang} 
-                onChange={(e) => setTargetLang(e.target.value)}
+              <div className="form-group">
+                <label className="form-label">目标语言</label>
+                <select 
+                  className="form-input"
+                  value={targetLang} 
+                  onChange={(e) => setTargetLang(e.target.value)}
+                >
+                  {languages.map(l => (
+                    <option key={l.id} value={l.id}>
+                      {l.flag} {l.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <button 
+                className="btn btn-primary"
+                onClick={translate}
+                disabled={!text || translating}
               >
-                {languages.map(l => (
-                  <option key={l.id} value={l.id}>
-                    {l.flag} {l.name}
-                  </option>
-                ))}
-              </select>
+                {translating ? '⚡ 翻译中...' : '🌍 开始翻译'}
+              </button>
             </div>
-
-            <button 
-              className="btn btn-primary" 
-              style={{ width: '100%', padding: '14px' }}
-              onClick={translate}
-              disabled={!text || translating}
-            >
-              {translating ? '翻译中...' : '开始翻译'}
-            </button>
           </div>
 
           {/* 输出面板 */}
-          <div className="output-panel">
-            <h3 className="panel-title">翻译结果</h3>
-            
-            {translating ? (
-              <div className="generating">
-                <div className="spinner"></div>
-                <span>正在翻译...</span>
-              </div>
-            ) : result ? (
-              <div>
-                <div className="output-content">{result}</div>
-                <div style={{ marginTop: '16px', display: 'flex', gap: '12px' }}>
-                  <button className="btn btn-primary" onClick={() => navigator.clipboard.writeText(result)}>
-                    复制结果
-                  </button>
-                  <button className="btn btn-secondary">重新翻译</button>
+          <div className="panel">
+            <div className="panel-header">
+              <div className="panel-header-icon">✨</div>
+              <h3>翻译结果</h3>
+            </div>
+            <div className="panel-body">
+              {translating ? (
+                <div className="generating">
+                  <div className="spinner"></div>
+                  <span>正在翻译...</span>
                 </div>
-              </div>
-            ) : (
-              <div className="output-content" style={{ textAlign: 'center', color: '#999' }}>
-                输入内容，选择语言，点击翻译
-              </div>
-            )}
+              ) : result ? (
+                <>
+                  <div className="output-preview">
+                    <div className="output-content">{result}</div>
+                  </div>
+                  <div className="output-actions">
+                    <button className="btn btn-success btn-sm" onClick={() => navigator.clipboard.writeText(result)}>📋 复制结果</button>
+                    <button className="btn btn-secondary btn-sm" onClick={translate}>🔄 重新翻译</button>
+                  </div>
+                </>
+              ) : (
+                <div className="output-preview" style={{ color: '#999' }}>
+                  <div className="upload-icon">🌍</div>
+                  <p>输入内容，选择语言，点击翻译</p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

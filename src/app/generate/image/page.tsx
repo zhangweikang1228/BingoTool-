@@ -1,10 +1,16 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+
+const styles = [
+  { id: 'default', name: '默认风格' },
+  { id: 'outdoor', name: '户外场景' },
+  { id: 'studio', name: '摄影棚' },
+  { id: 'lifestyle', name: '生活场景' },
+]
 
 export default function ImageGeneratePage() {
-  const router = useRouter()
   const [file, setFile] = useState<File | null>(null)
   const [preview, setPreview] = useState<string>('')
   const [style, setStyle] = useState('default')
@@ -13,14 +19,12 @@ export default function ImageGeneratePage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   useEffect(() => {
-    // 检查登录状态
-    const userId = document.cookie.includes('user_id=')
-    if (!userId) {
-      router.push('/login')
+    if (!document.cookie.includes('user_id=')) {
+      window.location.href = '/login'
     } else {
       setIsLoggedIn(true)
     }
-  }, [router])
+  }, [])
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0]
@@ -36,12 +40,14 @@ export default function ImageGeneratePage() {
     setGenerating(true)
     setResult('')
     
-    // 模拟生成
     await new Promise(resolve => setTimeout(resolve, 2000))
-    
-    // 模拟结果
     setResult('https://picsum.photos/800/600')
     setGenerating(false)
+  }
+
+  const handleLogout = () => {
+    document.cookie = 'user_id=;expires=Thu, 01 Jan 1970 00:00:00 GMT'
+    window.location.href = '/login'
   }
 
   if (!isLoggedIn) {
@@ -56,105 +62,112 @@ export default function ImageGeneratePage() {
     <>
       <nav className="navbar">
         <div className="container">
-          <div className="logo">BingoTool</div>
+          <Link href="/" className="logo">
+            <div className="logo-icon">B</div>
+            BingoTool
+          </Link>
           <ul className="nav-links">
-            <li><a href="/dashboard">仪表盘</a></li>
-            <li><a href="/generate/image" style={{ color: '#6366f1' }}>商品图</a></li>
-            <li><a href="/generate/text">种草文案</a></li>
-            <li><a href="/generate/model">虚拟模特</a></li>
-            <li><a href="/generate/translate">翻译</a></li>
+            <li><Link href="/dashboard">仪表盘</Link></li>
+            <li><Link href="/generate/image" className="active">商品图</Link></li>
+            <li><Link href="/generate/text">种草文案</Link></li>
+            <li><Link href="/generate/model">虚拟模特</Link></li>
+            <li><Link href="/generate/translate">翻译</Link></li>
           </ul>
-          <div>
-            <button className="btn btn-secondary" onClick={() => {
-              document.cookie = 'user_id=;expires=Thu, 01 Jan 1970 00:00:00 GMT'
-              router.push('/login')
-            }}>退出登录</button>
-          </div>
+          <button className="btn btn-secondary" onClick={handleLogout}>退出</button>
         </div>
       </nav>
 
-      <div className="container generate-page">
-        <div className="generate-header">
-          <h1>商品图生成</h1>
+      <div className="generate-page">
+        <div className="page-header">
+          <h1>🖼️ 商品图生成</h1>
           <p>上传商品图片，AI自动生成精美主图</p>
         </div>
 
         <div className="generate-container">
           {/* 输入面板 */}
-          <div className="input-panel">
-            <h3 className="panel-title">上传商品图片</h3>
-            
-            <div className="upload-area" style={{ position: 'relative' }}>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleFileChange}
-                style={{ 
-                  position: 'absolute', 
-                  inset: 0, 
-                  opacity: 0, 
-                  cursor: 'pointer',
-                  width: '100%',
-                  height: '100%'
-                }}
-              />
-              {preview ? (
-                <img src={preview} alt="预览" className="output-image" />
-              ) : (
-                <>
-                  <div className="icon">📷</div>
-                  <p>点击或拖拽上传商品图片</p>
-                  <p style={{ fontSize: '12px', color: '#999' }}>支持 JPG、PNG、WebP</p>
-                </>
-              )}
+          <div className="panel">
+            <div className="panel-header">
+              <div className="panel-header-icon">📤</div>
+              <h3>上传商品图片</h3>
             </div>
+            <div className="panel-body">
+              <div className="upload-area" style={{ position: 'relative' }}>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  style={{ 
+                    position: 'absolute', 
+                    inset: 0, 
+                    opacity: 0, 
+                    cursor: 'pointer',
+                    width: '100%',
+                    height: '100%'
+                  }}
+                />
+                {preview ? (
+                  <img src={preview} alt="预览" style={{ maxWidth: '100%', borderRadius: '12px' }} />
+                ) : (
+                  <>
+                    <div className="upload-icon">📷</div>
+                    <p>点击或拖拽上传商品图片</p>
+                    <p style={{ fontSize: '12px', color: '#999', marginTop: '8px' }}>支持 JPG、PNG、WebP</p>
+                  </>
+                )}
+              </div>
 
-            <div className="form-group">
-              <label>选择风格</label>
-              <select 
-                className="select" 
-                value={style}
-                onChange={(e) => setStyle(e.target.value)}
+              <div className="form-group">
+                <label className="form-label">选择风格</label>
+                <select 
+                  className="form-input"
+                  value={style}
+                  onChange={(e) => setStyle(e.target.value)}
+                >
+                  {styles.map(s => (
+                    <option key={s.id} value={s.id}>{s.name}</option>
+                  ))}
+                </select>
+              </div>
+
+              <button 
+                className="btn btn-primary"
+                onClick={generate}
+                disabled={!file || generating}
               >
-                <option value="default">默认风格</option>
-                <option value="outdoor">户外场景</option>
-                <option value="studio">摄影棚</option>
-                <option value="lifestyle">生活场景</option>
-              </select>
+                {generating ? '⚡ 生成中...' : '🚀 开始生成'}
+              </button>
             </div>
-
-            <button 
-              className="btn btn-primary" 
-              style={{ width: '100%', padding: '14px' }}
-              onClick={generate}
-              disabled={!file || generating}
-            >
-              {generating ? '生成中...' : '生成商品图'}
-            </button>
           </div>
 
           {/* 输出面板 */}
-          <div className="output-panel">
-            <h3 className="panel-title">生成结果</h3>
-            
-            {generating ? (
-              <div className="generating">
-                <div className="spinner"></div>
-                <span>AI正在生成中，请稍候...</span>
-              </div>
-            ) : result ? (
-              <div>
-                <img src={result} alt="生成结果" className="output-image" />
-                <div style={{ marginTop: '16px', display: 'flex', gap: '12px' }}>
-                  <button className="btn btn-primary">下载图片</button>
-                  <button className="btn btn-secondary">重新生成</button>
+          <div className="panel">
+            <div className="panel-header">
+              <div className="panel-header-icon">✨</div>
+              <h3>生成结果</h3>
+            </div>
+            <div className="panel-body">
+              {generating ? (
+                <div className="generating">
+                  <div className="spinner"></div>
+                  <span>AI正在生成中，请稍候...</span>
                 </div>
-              </div>
-            ) : (
-              <div className="output-content" style={{ textAlign: 'center', color: '#999' }}>
-                上传图片并点击生成，等待AI创作
-              </div>
-            )}
+              ) : result ? (
+                <>
+                  <div className="output-preview">
+                    <img src={result} alt="生成结果" />
+                  </div>
+                  <div className="output-actions">
+                    <button className="btn btn-success btn-sm">💾 下载图片</button>
+                    <button className="btn btn-secondary btn-sm" onClick={generate}>🔄 重新生成</button>
+                  </div>
+                </>
+              ) : (
+                <div className="output-preview" style={{ color: '#999' }}>
+                  <div className="upload-icon">🎨</div>
+                  <p>上传图片并点击生成，等待AI创作</p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

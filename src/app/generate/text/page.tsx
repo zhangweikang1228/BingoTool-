@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 
 const platforms = [
@@ -22,13 +22,21 @@ export default function TextGeneratePage() {
   const [tone, setTone] = useState('casual')
   const [generating, setGenerating] = useState(false)
   const [result, setResult] = useState('')
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+  useEffect(() => {
+    if (!document.cookie.includes('user_id=')) {
+      window.location.href = '/login'
+    } else {
+      setIsLoggedIn(true)
+    }
+  }, [])
 
   const generate = async () => {
     if (!productInfo) return
     
     setGenerating(true)
     
-    // 模拟API调用
     const res = await fetch('/api/generate/text', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -40,97 +48,120 @@ export default function TextGeneratePage() {
     setGenerating(false)
   }
 
+  const handleLogout = () => {
+    document.cookie = 'user_id=;expires=Thu, 01 Jan 1970 00:00:00 GMT'
+    window.location.href = '/login'
+  }
+
+  if (!isLoggedIn) {
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
+        <p>正在跳转登录页...</p>
+      </div>
+    )
+  }
+
   return (
     <>
       <nav className="navbar">
         <div className="container">
-          <Link href="/" className="logo">BingoTool</Link>
+          <Link href="/" className="logo">
+            <div className="logo-icon">B</div>
+            BingoTool
+          </Link>
           <ul className="nav-links">
             <li><Link href="/dashboard">仪表盘</Link></li>
             <li><Link href="/generate/image">商品图</Link></li>
-            <li><Link href="/generate/text" style={{ color: '#6366f1' }}>种草文案</Link></li>
+            <li><Link href="/generate/text" className="active">种草文案</Link></li>
             <li><Link href="/generate/model">虚拟模特</Link></li>
             <li><Link href="/generate/translate">翻译</Link></li>
           </ul>
+          <button className="btn btn-secondary" onClick={handleLogout}>退出</button>
         </div>
       </nav>
 
-      <div className="container generate-page">
-        <div className="generate-header">
-          <h1>种草文案生成</h1>
+      <div className="generate-page">
+        <div className="page-header">
+          <h1>✍️ 种草文案生成</h1>
           <p>输入商品信息，AI生成种草文案</p>
         </div>
 
         <div className="generate-container">
           {/* 输入面板 */}
-          <div className="input-panel">
-            <h3 className="panel-title">输入商品信息</h3>
-            
-            <div className="form-group">
-              <label>商品描述</label>
-              <textarea
-                className="textarea"
-                placeholder="请输入商品名称、特点、卖点等信息...
-例如：这款连衣裙采用优质雪纺面料，轻薄透气，适合夏季穿着。设计简约大方，显瘦遮肉，多色可选。"
-                value={productInfo}
-                onChange={(e) => setProductInfo(e.target.value)}
-              />
+          <div className="panel">
+            <div className="panel-header">
+              <div className="panel-header-icon">📝</div>
+              <h3>输入商品信息</h3>
             </div>
+            <div className="panel-body">
+              <div className="form-group">
+                <label className="form-label">商品描述</label>
+                <textarea
+                  className="form-input"
+                  placeholder="请输入商品名称、特点、卖点等信息..."
+                  style={{ minHeight: '150px', resize: 'vertical' }}
+                  value={productInfo}
+                  onChange={(e) => setProductInfo(e.target.value)}
+                />
+              </div>
 
-            <div className="form-group">
-              <label>发布平台</label>
-              <select className="select" value={platform} onChange={(e) => setPlatform(e.target.value)}>
-                {platforms.map(p => (
-                  <option key={p.id} value={p.id}>{p.name}</option>
-                ))}
-              </select>
+              <div className="form-group">
+                <label className="form-label">发布平台</label>
+                <select className="form-input" value={platform} onChange={(e) => setPlatform(e.target.value)}>
+                  {platforms.map(p => (
+                    <option key={p.id} value={p.id}>{p.name}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">文案风格</label>
+                <select className="form-input" value={tone} onChange={(e) => setTone(e.target.value)}>
+                  {tones.map(t => (
+                    <option key={t.id} value={t.id}>{t.name}</option>
+                  ))}
+                </select>
+              </div>
+
+              <button 
+                className="btn btn-primary"
+                onClick={generate}
+                disabled={!productInfo || generating}
+              >
+                {generating ? '⚡ 生成中...' : '🚀 开始生成'}
+              </button>
             </div>
-
-            <div className="form-group">
-              <label>文案风格</label>
-              <select className="select" value={tone} onChange={(e) => setTone(e.target.value)}>
-                {tones.map(t => (
-                  <option key={t.id} value={t.id}>{t.name}</option>
-                ))}
-              </select>
-            </div>
-
-            <button 
-              className="btn btn-primary" 
-              style={{ width: '100%', padding: '14px' }}
-              onClick={generate}
-              disabled={!productInfo || generating}
-            >
-              {generating ? '生成中...' : '生成种草文案'}
-            </button>
           </div>
 
           {/* 输出面板 */}
-          <div className="output-panel">
-            <h3 className="panel-title">生成结果</h3>
-            
-            {generating ? (
-              <div className="generating">
-                <div className="spinner"></div>
-                <span>AI正在创作中...</span>
-              </div>
-            ) : result ? (
-              <div>
-                <div className="output-content">{result}</div>
-                <div style={{ marginTop: '16px', display: 'flex', gap: '12px' }}>
-                  <button className="btn btn-primary" onClick={() => navigator.clipboard.writeText(result)}>
-                    复制文案
-                  </button>
-                  <button className="btn btn-secondary" onClick={generate}>
-                    重新生成
-                  </button>
+          <div className="panel">
+            <div className="panel-header">
+              <div className="panel-header-icon">✨</div>
+              <h3>生成结果</h3>
+            </div>
+            <div className="panel-body">
+              {generating ? (
+                <div className="generating">
+                  <div className="spinner"></div>
+                  <span>AI正在创作中...</span>
                 </div>
-              </div>
-            ) : (
-              <div className="output-content" style={{ textAlign: 'center', color: '#999' }}>
-                输入商品信息，点击生成按钮
-              </div>
-            )}
+              ) : result ? (
+                <>
+                  <div className="output-preview">
+                    <div className="output-content">{result}</div>
+                  </div>
+                  <div className="output-actions">
+                    <button className="btn btn-success btn-sm" onClick={() => navigator.clipboard.writeText(result)}>📋 复制文案</button>
+                    <button className="btn btn-secondary btn-sm" onClick={generate}>🔄 重新生成</button>
+                  </div>
+                </>
+              ) : (
+                <div className="output-preview" style={{ color: '#999' }}>
+                  <div className="upload-icon">💡</div>
+                  <p>输入商品信息，点击生成按钮</p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
