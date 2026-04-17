@@ -16,7 +16,7 @@ export default function Home() {
           </ul>
           <div>
             <Link href="/login">
-              <button className="btn btn-secondary">登录</button>
+              <button className="btn btn-primary">立即登录</button>
             </Link>
           </div>
         </div>
@@ -28,7 +28,7 @@ export default function Home() {
           <h1>AI内容生成平台</h1>
           <p>一键生成商品主图、种草文案、短视频脚本</p>
           <Link href="/login">
-            <button className="btn btn-primary">免费开始使用</button>
+            <button className="btn btn-primary" style={{ background: '#fff', color: '#6366f1' }}>免费开始使用</button>
           </Link>
         </div>
       </section>
@@ -40,24 +40,36 @@ export default function Home() {
             <div className="feature-icon">🖼️</div>
             <h3>商品图生成</h3>
             <p>上传商品图片，AI自动生成精美主图，支持背景替换、场景合成，让你的商品脱颖而出。</p>
+            <Link href="/login">
+              <button className="btn btn-primary" style={{ marginTop: '16px' }}>立即使用</button>
+            </Link>
           </div>
 
           <div className="feature-card">
             <div className="feature-icon">✍️</div>
             <h3>种草文案</h3>
             <p>输入商品信息，AI生成小红书、抖音风格的种草文案，吸睛又转化，让用户忍不住下单。</p>
+            <Link href="/login">
+              <button className="btn btn-primary" style={{ marginTop: '16px' }}>立即使用</button>
+            </Link>
           </div>
 
           <div className="feature-card">
             <div className="feature-icon">👗</div>
             <h3>虚拟模特试穿</h3>
             <p>上传服装图片，AI生成模特上身效果图，多肤色、多场景可选，省去拍摄成本。</p>
+            <Link href="/login">
+              <button className="btn btn-primary" style={{ marginTop: '16px' }}>立即使用</button>
+            </Link>
           </div>
 
           <div className="feature-card">
             <div className="feature-icon">🌐</div>
             <h3>多语言翻译</h3>
             <p>一键将内容翻译成英语、日语、韩语等15+语种，助力跨境电商快速出海。</p>
+            <Link href="/login">
+              <button className="btn btn-primary" style={{ marginTop: '16px' }}>立即使用</button>
+            </Link>
           </div>
         </div>
       </div>

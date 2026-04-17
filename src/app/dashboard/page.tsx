@@ -1,3 +1,6 @@
+'use client'
+
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 
 // 模拟数据
@@ -17,6 +20,30 @@ const history = [
 ]
 
 export default function DashboardPage() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+  useEffect(() => {
+    const userId = document.cookie.includes('user_id=')
+    if (!userId) {
+      window.location.href = '/login'
+    } else {
+      setIsLoggedIn(true)
+    }
+  }, [])
+
+  const handleLogout = () => {
+    document.cookie = 'user_id=;expires=Thu, 01 Jan 1970 00:00:00 GMT'
+    window.location.href = '/login'
+  }
+
+  if (!isLoggedIn) {
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
+        <p>正在跳转登录页...</p>
+      </div>
+    )
+  }
+
   return (
     <>
       {/* 导航栏 */}
@@ -31,8 +58,8 @@ export default function DashboardPage() {
             <li><Link href="/generate/translate">翻译</Link></li>
           </ul>
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-            <span style={{ color: '#666' }}>138****8888</span>
-            <button className="btn btn-secondary">升级会员</button>
+            <span style={{ color: '#666' }}>会员用户</span>
+            <button className="btn btn-secondary" onClick={handleLogout}>退出登录</button>
           </div>
         </div>
       </nav>
