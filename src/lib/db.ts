@@ -52,6 +52,15 @@ users.set('admin@bingotool.com', defaultAdmin)
 users.set('admin-001', defaultAdmin)
 
 // 数据库操作
+// 导出兼容函数供 auth.ts 使用
+export function getUserById(id: string): User | undefined {
+  return users.get(id)
+}
+
+export function getUsers(): User[] {
+  return Array.from(users.values())
+}
+
 export const db = {
   // 用户操作
   users: {
