@@ -37,6 +37,20 @@ let creditConfigs: CreditConfig[] = [
 // 验证码存储
 let verificationCodes: Map<string, { code: string; expires: number }> = new Map()
 
+// GitHub/微信用户映射
+let githubUsers: Map<string, string> = new Map() // githubId -> userId
+let wechatUsers: Map<string, string> = new Map() // wechatOpenId -> userId
+
+// API Key 存储（演示用）
+let apiKeys: Map<string, { userId: string; name: string; created: Date }> = new Map()
+
+// 初始化一个演示 API Key
+apiKeys.set('demo-api-key-12345', {
+  userId: 'admin-001',
+  name: 'Demo API Key',
+  created: new Date()
+})
+
 // 默认管理员账号
 const defaultAdmin: User = {
   id: 'admin-001',
@@ -172,5 +186,73 @@ export const db = {
       verificationCodes.delete(phone)
       return true
     }
+  },
+
+  // OAuth 用户操作
+  github: {
+    getUserByGithubId: (githubId: string): User | undefined => {
+      const userId = githubUsers.get(githubId)
+      return userId ? users.get(userId) : undefined
+    },
+    linkUser: (githubId: string, userId: string) => {
+      githubUsers.set(githubId, userId)
+    }
+  },
+
+  wechat: {
+    getUserByOpenId: (openid: string): User | undefined => {
+      const userId = wechatUsers.get(openid)
+      return userId ? users.get(userId) : undefined
+    },
+    linkUser: (openid: string, userId: string) => {
+      wechatUsers.set(openid, userId)
+    }
+  },
+
+  // API Key 操作
+  apiKeys: {
+    find: (key: string) => {
+      const meta = apiKeys.get(key)
+      if (!meta) return null
+      const user = users.get(meta.userId)
+      return user ? { user, apiKey: meta } : null
+    },
+    create: (userId: string, name: string) => {
+      const key = `bt_${Date.now()}_${Math.random().toString(36).substr(2, 16)}`
+      apiKeys.set(key, { userId, name, created: new Date() })
+      return key
+    },
+    checkRateLimit: (key: string, limit: number = 100): boolean => {
+      // 演示模式：不做限流检查
+      return true
+    }
   }
+}
+
+// 导出兼容函数（供 auth.ts 和路由使用）
+export function getUserByGithubId(githubId: string): User | undefined {
+  return db.github.getUserByGithubId(githubId)
+}
+
+export function getUserByWechatOpenId(openid: string): User | undefined {
+  return db.wechat.getUserByOpenId(openid)
+}
+
+export function createUser(data: { email?: string; phone?: string; name?: string; provider?: string }): User {
+  const user = db.users.create({
+    ...data,
+    password: '',
+    role: 'user',
+    credits: { image: 100, video: 50, text: 200, translate: 200 }
+  })
+  // 如果有 OAuth ID，建立映射
+  return user
+}
+
+export function findApiKey(key: string) {
+  return db.apiKeys.find(key)
+}
+
+export function checkRateLimit(key: string, limit?: number) {
+  return db.apiKeys.checkRateLimit(key, limit)
 }
