@@ -1,0 +1,306 @@
+/* ========== 动态暗色背景 ========== */
+.gradientBg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background: #000;
+  overflow: hidden;
+}
+
+.gradientBg::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(ellipse at 50% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+              radial-gradient(ellipse at 80% 50%, rgba(139, 92, 246, 0.1) 0%, transparent 40%),
+              radial-gradient(ellipse at 20% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 40%);
+  animation: subtleMove 30s ease-in-out infinite;
+}
+
+@keyframes subtleMove {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(-2%, 2%); }
+}
+
+/* ========== Hero Section ========== */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 100px 24px 60px;
+}
+
+.heroLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 6px 14px;
+  border-radius: 20px;
+  color: #86868b;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 24px;
+  animation: fadeInUp 1s ease;
+}
+
+.hero h1 {
+  font-size: clamp(48px, 10vw, 80px);
+  font-weight: 700;
+  color: #f5f5f7;
+  line-height: 1.05;
+  margin-bottom: 16px;
+  letter-spacing: -2px;
+  animation: fadeInUp 1s ease 0.1s both;
+  max-width: 900px;
+}
+
+.hero p {
+  font-size: clamp(18px, 3vw, 28px);
+  color: #86868b;
+  max-width: 680px;
+  line-height: 1.4;
+  margin-bottom: 32px;
+  font-weight: 400;
+  animation: fadeInUp 1s ease 0.2s both;
+}
+
+.heroActions {
+  display: flex;
+  gap: 12px;
+  animation: fadeInUp 1s ease 0.3s both;
+}
+
+.hero .btn {
+  padding: 14px 28px;
+  font-size: 17px;
+  border-radius: 12px;
+}
+
+/* ========== 产品展示区 ========== */
+.showcase {
+  padding: 80px max(48px, calc((100vw - 1200px) / 2)) 120px;
+  text-align: center;
+}
+
+.showcaseLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: #86868b;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+
+.showcase h2 {
+  font-size: clamp(32px, 5vw, 48px);
+  font-weight: 600;
+  color: #f5f5f7;
+  line-height: 1.1;
+  margin-bottom: 16px;
+  letter-spacing: -1px;
+}
+
+.showcaseDesc {
+  font-size: 18px;
+  color: #86868b;
+  max-width: 500px;
+  margin: 0 auto 60px;
+  line-height: 1.5;
+}
+
+/* ========== 功能卡片 (Apple Card Style) ========== */
+.features {
+  padding: 0 max(48px, calc((100vw - 1200px) / 2)) 120px;
+}
+
+.featuresGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.featureCard {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  border-radius: 24px;
+  padding: 40px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  min-height: 320px;
+  display: flex;
+  flex-direction: column;
+  animation: fadeInUp 0.8s ease both;
+}
+
+.featureCard:nth-child(1) { animation-delay: 0.4s; }
+.featureCard:nth-child(2) { animation-delay: 0.5s; }
+.featureCard:nth-child(3) { animation-delay: 0.6s; }
+.featureCard:nth-child(4) { animation-delay: 0.7s; }
+
+.featureCard:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-4px);
+}
+
+.featureCard:hover .featureVisual {
+  transform: scale(1.02);
+}
+
+.featureVisual {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+  transition: transform 0.5s ease;
+}
+
+.featureVisualInner {
+  width: 100%;
+  height: 140px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.featureCard h3 {
+  font-size: 22px;
+  font-weight: 600;
+  color: #f5f5f7;
+  margin-bottom: 6px;
+  letter-spacing: -0.3px;
+}
+
+.featureCard p {
+  font-size: 15px;
+  color: #86868b;
+  line-height: 1.4;
+  margin-bottom: 16px;
+}
+
+.learnMore {
+  font-size: 14px;
+  color: #0071e3;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.featureIconLarge {
+  font-size: 48px;
+  position: relative;
+  z-index: 1;
+}
+
+/* 卡片渐变背景 */
+.gradient1 .featureVisualInner {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.gradient2 .featureVisualInner {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.gradient3 .featureVisualInner {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.gradient4 .featureVisualInner {
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+
+/* ========== 底部CTA ========== */
+.ctaSection {
+  padding: 100px 24px;
+  text-align: center;
+}
+
+.ctaSection h2 {
+  font-size: clamp(36px, 6vw, 56px);
+  font-weight: 600;
+  color: #f5f5f7;
+  line-height: 1.1;
+  margin-bottom: 16px;
+  letter-spacing: -1px;
+}
+
+.ctaSection p {
+  font-size: 20px;
+  color: #86868b;
+  margin-bottom: 32px;
+}
+
+.ctaBtn {
+  padding: 14px 28px;
+  font-size: 17px;
+  border-radius: 12px;
+}
+
+/* ========== Footer ========== */
+.footer {
+  padding: 24px max(48px, calc((100vw - 1200px) / 2));
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+  color: #86868b;
+  font-size: 13px;
+}
+
+/* ========== 动画 ========== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ========== 响应式 ========== */
+@media (max-width: 900px) {
+  .features {
+    padding: 0 24px 60px;
+  }
+  
+  .featuresGrid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .featureCard {
+    min-height: 260px;
+    padding: 28px;
+  }
+  
+  .heroActions {
+    flex-direction: column;
+    width: 100%;
+    max-width: 280px;
+  }
+  
+  .hero .btn {
+    width: 100%;
+  }
+}

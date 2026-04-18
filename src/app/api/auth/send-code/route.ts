@@ -1,16 +1,13 @@
 import { NextResponse } from 'next/server'
-
-// 模拟验证码存储（生产环境用Redis）
-const codeStore = new Map()
+import { db } from '@/lib/db'
 
 export async function POST(request: Request) {
   try {
     const { phone } = await request.json()
     
-    // 验证手机号格式
-    if (!phone || !/^1[3-9]\d{9}$/.test(phone)) {
+    if (!phone || phone.length !== 11) {
       return NextResponse.json(
-        { error: '请输入正确的手机号' },
+        { success: false, message: '请输入正确的11位手机号' },
         { status: 400 }
       )
     }
@@ -18,22 +15,21 @@ export async function POST(request: Request) {
     // 生成6位验证码
     const code = Math.floor(100000 + Math.random() * 900000).toString()
     
-    // 存储验证码（5分钟有效期）
-    codeStore.set(phone, {
-      code,
-      expires: Date.now() + 5 * 60 * 1000
-    })
+    // 存储验证码
+    db.codes.set(phone, code)
     
-    // TODO: 实际发送短信
-    console.log(`[模拟短信] 发送给 ${phone}，验证码：${code}`)
+    // 在实际环境中，这里应该调用短信服务商API发送验证码
+    // 例如：阿里云、腾讯云等
+    console.log(`[验证码] 手机号: ${phone}, 验证码: ${code}`)
     
     return NextResponse.json({
       success: true,
       message: '验证码已发送'
     })
   } catch (error) {
+    console.error('发送验证码失败:', error)
     return NextResponse.json(
-      { error: '服务器错误' },
+      { success: false, message: '发送失败，请重试' },
       { status: 500 }
     )
   }

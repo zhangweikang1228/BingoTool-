@@ -1,96 +1,138 @@
-import Link from 'next/link'
+'use client'
 
-export default function Home() {
+import Link from 'next/link'
+import styles from './page.module.css'
+
+const features = [
+  {
+    id: 'image',
+    icon: '🖼️',
+    title: '商品图生成',
+    desc: 'AI自动生成精美商品主图，一键优化展示效果',
+    gradient: 'gradient1',
+    href: '/generate/image',
+    visual: '✨'
+  },
+  {
+    id: 'text',
+    icon: '✍️',
+    title: '种草文案',
+    desc: '智能创作小红书、抖音等平台种草内容',
+    gradient: 'gradient2',
+    href: '/generate/text',
+    visual: '📝'
+  },
+  {
+    id: 'model',
+    icon: '👗',
+    title: '虚拟模特',
+    desc: 'AI模特试穿效果，节省拍摄成本',
+    gradient: 'gradient3',
+    href: '/generate/model',
+    visual: '👤'
+  },
+  {
+    id: 'translate',
+    icon: '🌐',
+    title: '多语言翻译',
+    desc: '一键翻译15+语种，助力跨境电商',
+    gradient: 'gradient4',
+    href: '/generate/translate',
+    visual: '🌍'
+  },
+]
+
+export default function HomePage() {
   return (
     <>
-      {/* 导航栏 */}
+      <div className={styles.gradientBg} />
+      
       <nav className="navbar">
-        <div className="container">
-          <Link href="/" className="logo">
-            <div className="logo-icon">B</div>
-            BingoTool
+        <Link href="/" className="logo">
+          <div className="logo-icon">B</div>
+          BingoTool
+        </Link>
+        
+        <ul className="nav-links">
+          <li><Link href="/generate/image">商品图</Link></li>
+          <li><Link href="/generate/text">种草文案</Link></li>
+          <li><Link href="/generate/model">虚拟模特</Link></li>
+          <li><Link href="/generate/translate">翻译</Link></li>
+        </ul>
+        
+        <div className="nav-actions">
+          <Link href="/admin" className="btn btn-ghost" style={{ marginRight: '12px' }}>
+            管理后台
           </Link>
-          <ul className="nav-links">
-            <li><Link href="/dashboard">仪表盘</Link></li>
-            <li><Link href="/generate/image">商品图</Link></li>
-            <li><Link href="/generate/text">种草文案</Link></li>
-            <li><Link href="/generate/model">虚拟模特</Link></li>
-            <li><Link href="/generate/translate">翻译</Link></li>
-          </ul>
           <Link href="/login" className="btn btn-primary">
-            立即登录
+            立即开始
           </Link>
         </div>
       </nav>
 
-      {/* Hero区域 */}
-      <section className="hero">
-        <h1>AI内容生成平台</h1>
-        <p>一键生成商品主图、种草文案、短视频脚本<br />让内容生产效率提升10倍</p>
-        <div className="hero-buttons">
-          <Link href="/login" className="btn-white">
-            立即开始免费使用
+      <main className={styles.hero}>
+        <div className={styles.heroLabel}>
+          <span>✨</span> AI 驱动创意平台
+        </div>
+        
+        <h1>
+          让创意<br />无限延伸
+        </h1>
+        
+        <p>
+          BingoTool 专为电商从业者打造<br />
+          商品图、文案、模特，一键搞定
+        </p>
+        
+        <div className={styles.heroActions}>
+          <Link href="/login" className="btn btn-primary">
+            🚀 立即体验
           </Link>
-          <Link href="#features" className="btn-outline-white">
+          <Link href="#features" className="btn btn-secondary">
             了解更多
           </Link>
         </div>
+      </main>
+
+      <section className={styles.showcase} id="features">
+        <div className={styles.showcaseLabel}>核心功能</div>
+        <h2>强大的 AI 能力</h2>
+        <p className={styles.showcaseDesc}>
+          告别繁琐的传统创作流程，用 AI 释放创意潜能
+        </p>
       </section>
 
-      {/* 功能介绍 */}
-      <div className="features" id="features">
-        <div className="feature-card">
-          <div className="feature-icon">🖼️</div>
-          <h3>商品图生成</h3>
-          <p>上传商品图片，AI自动生成精美主图，支持背景替换、场景合成，让你的商品脱颖而出。</p>
-          <Link href="/login" className="feature-btn">
-            立即使用 
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M5 12h14M12 5l7 7-7 7"/>
-            </svg>
-          </Link>
+      <section className={styles.features}>
+        <div className={styles.featuresGrid}>
+          {features.map((f) => (
+            <Link key={f.id} href={f.href} className={`${styles.featureCard} ${styles[f.gradient]}`}>
+              <div className={styles.featureVisual}>
+                <div className={styles.featureVisualInner}>
+                  <span className={styles.featureIconLarge}>{f.visual}</span>
+                </div>
+              </div>
+              <div>
+                <h3>{f.title}</h3>
+                <p>{f.desc}</p>
+                <span className={styles.learnMore}>
+                  了解更多 →
+                </span>
+              </div>
+            </Link>
+          ))}
         </div>
+      </section>
 
-        <div className="feature-card">
-          <div className="feature-icon">✍️</div>
-          <h3>种草文案</h3>
-          <p>输入商品信息，AI生成小红书、抖音风格的种草文案，吸睛又转化，让用户忍不住下单。</p>
-          <Link href="/login" className="feature-btn">
-            立即使用 
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M5 12h14M12 5l7 7-7 7"/>
-            </svg>
-          </Link>
-        </div>
+      <section className={styles.ctaSection}>
+        <h2>准备好开始了吗？</h2>
+        <p>立即体验 BingoTool，让创作变得简单</p>
+        <Link href="/login" className={`btn btn-primary ${styles.ctaBtn}`}>
+          🚀 开始使用
+        </Link>
+      </section>
 
-        <div className="feature-card">
-          <div className="feature-icon">👗</div>
-          <h3>虚拟模特试穿</h3>
-          <p>上传服装图片，AI生成模特上身效果图，多肤色、多场景可选，省去拍摄成本。</p>
-          <Link href="/login" className="feature-btn">
-            立即使用 
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M5 12h14M12 5l7 7-7 7"/>
-            </svg>
-          </Link>
-        </div>
-
-        <div className="feature-card">
-          <div className="feature-icon">🌐</div>
-          <h3>多语言翻译</h3>
-          <p>一键将内容翻译成英语、日语、韩语等15+语种，助力跨境电商快速出海。</p>
-          <Link href="/login" className="feature-btn">
-            立即使用 
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M5 12h14M12 5l7 7-7 7"/>
-            </svg>
-          </Link>
-        </div>
-      </div>
-
-      {/* 底部 */}
-      <footer className="footer">
-        <p>© 2024 BingoTool. 让内容生产更简单。</p>
+      <footer className={styles.footer}>
+        © 2024 BingoTool. All rights reserved.
       </footer>
     </>
   )

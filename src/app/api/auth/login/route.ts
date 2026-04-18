@@ -1,82 +1,182 @@
 import { NextResponse } from 'next/server'
-import { cookies } from 'next/headers'
-
-// 模拟验证码存储（与 send-code 共享，生产环境用Redis）
-const codeStore = new Map()
-
-// 模拟用户数据
-const users = new Map()
+import { db } from '@/lib/db'
 
 export async function POST(request: Request) {
   try {
-    const { phone, code } = await request.json()
+    const { email, phone, password, code, mode } = await request.json()
     
-    // 验证手机号
-    if (!phone || !/^1[3-9]\d{9}$/.test(phone)) {
-      return NextResponse.json(
-        { error: '请输入正确的手机号' },
-        { status: 400 }
-      )
-    }
-    
-    // 验证验证码
-    if (!code || code.length !== 6) {
-      return NextResponse.json(
-        { error: '请输入6位验证码' },
-        { status: 400 }
-      )
-    }
-    
-    // 检查验证码是否正确
-    const stored = codeStore.get(phone)
-    if (!stored || stored.code !== code) {
-      return NextResponse.json(
-        { error: '验证码错误' },
-        { status: 401 }
-      )
-    }
-    
-    // 检查验证码是否过期
-    if (Date.now() > stored.expires) {
-      return NextResponse.json(
-        { error: '验证码已过期' },
-        { status: 401 }
-      )
-    }
-    
-    // 删除已使用的验证码
-    codeStore.delete(phone)
-    
-    // 创建或获取用户
-    if (!users.has(phone)) {
-      users.set(phone, {
-        id: `user_${Date.now()}`,
-        phone,
-        createdAt: new Date().toISOString()
-      })
-    }
-    
-    const user = users.get(phone)
-    
-    // 设置Cookie（简化版，生产环境用JWT）
-    const cookieStore = await cookies()
-    cookieStore.set('user_id', user.id, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 60 * 60 * 24 * 7 // 7天
-    })
-    
-    return NextResponse.json({
-      success: true,
-      user: {
-        id: user.id,
-        phone: user.phone
+    if (mode === 'register') {
+      // 注册逻辑
+      if (email) {
+        // 邮箱注册
+        if (!password || password.length < 8) {
+          return NextResponse.json(
+            { success: false, message: '密码至少8位' },
+            { status: 400 }
+          )
+        }
+        
+        // 检查邮箱是否已存在
+        const existingUser = db.users.findByEmail(email)
+        if (existingUser) {
+          return NextResponse.json(
+            { success: false, message: '该邮箱已被注册' },
+            { status: 400 }
+          )
+        }
+        
+        // 创建新用户
+        const newUser = db.users.create({
+          email,
+          password,
+          role: 'user',
+          credits: { image: 100, video: 50, text: 200, translate: 200 }
+        })
+        
+        // 直接登录成功，返回用户信息
+        return NextResponse.json({
+          success: true,
+          message: '注册成功',
+          user: {
+            id: newUser.id,
+            email: newUser.email,
+            role: newUser.role,
+            credits: newUser.credits
+          }
+        })
+      } else if (phone) {
+        // 手机注册
+        if (!code) {
+          return NextResponse.json(
+            { success: false, message: '请输入验证码' },
+            { status: 400 }
+          )
+        }
+        
+        // 验证验证码
+        if (!db.codes.verify(phone, code)) {
+          return NextResponse.json(
+            { success: false, message: '验证码错误或已过期' },
+            { status: 400 }
+          )
+        }
+        
+        // 检查手机号是否已存在
+        const existingUser = db.users.findByPhone(phone)
+        if (existingUser) {
+          return NextResponse.json(
+            { success: false, message: '该手机号已被注册' },
+            { status: 400 }
+          )
+        }
+        
+        if (!password || password.length < 8) {
+          return NextResponse.json(
+            { success: false, message: '密码至少8位' },
+            { status: 400 }
+          )
+        }
+        
+        // 创建新用户
+        const newUser = db.users.create({
+          phone,
+          password,
+          role: 'user',
+          credits: { image: 100, video: 50, text: 200, translate: 200 }
+        })
+        
+        return NextResponse.json({
+          success: true,
+          message: '注册成功',
+          user: {
+            id: newUser.id,
+            phone: newUser.phone,
+            role: newUser.role,
+            credits: newUser.credits
+          }
+        })
       }
-    })
-  } catch (error) {
+    } else {
+      // 登录逻辑
+      if (email) {
+        // 邮箱登录
+        const user = db.users.findByEmail(email)
+        if (!user) {
+          return NextResponse.json(
+            { success: false, message: '账号或密码错误' },
+            { status: 401 }
+          )
+        }
+        
+        if (user.password !== password) {
+          return NextResponse.json(
+            { success: false, message: '账号或密码错误' },
+            { status: 401 }
+          )
+        }
+        
+        // 更新最后登录时间
+        db.users.update(user.id, { lastLogin: new Date() })
+        
+        return NextResponse.json({
+          success: true,
+          message: '登录成功',
+          user: {
+            id: user.id,
+            email: user.email,
+            role: user.role,
+            credits: user.credits
+          }
+        })
+      } else if (phone) {
+        // 手机登录
+        if (!code) {
+          return NextResponse.json(
+            { success: false, message: '请输入验证码' },
+            { status: 400 }
+          )
+        }
+        
+        // 验证验证码
+        if (!db.codes.verify(phone, code)) {
+          return NextResponse.json(
+            { success: false, message: '验证码错误或已过期' },
+            { status: 400 }
+          )
+        }
+        
+        const user = db.users.findByPhone(phone)
+        if (!user) {
+          return NextResponse.json(
+            { success: false, message: '该手机号未注册' },
+            { status: 401 }
+          )
+        }
+        
+        // 更新最后登录时间
+        db.users.update(user.id, { lastLogin: new Date() })
+        
+        return NextResponse.json({
+          success: true,
+          message: '登录成功',
+          user: {
+            id: user.id,
+            phone: user.phone,
+            role: user.role,
+            credits: user.credits
+          }
+        })
+      }
+    }
+    
     return NextResponse.json(
-      { error: '服务器错误' },
+      { success: false, message: '参数错误' },
+      { status: 400 }
+    )
+  } catch (error) {
+    console.error('登录失败:', error)
+    return NextResponse.json(
+      { success: false, message: '服务器错误' },
       { status: 500 }
     )
   }

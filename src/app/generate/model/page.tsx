@@ -60,7 +60,7 @@ export default function ModelGeneratePage() {
   if (!isLoggedIn) {
     return (
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
-        <p>正在跳转登录页...</p>
+        <p style={{ color: '#86868b' }}>正在跳转登录页...</p>
       </div>
     )
   }
@@ -68,23 +68,23 @@ export default function ModelGeneratePage() {
   return (
     <>
       <nav className="navbar">
-        <div className="container">
-          <Link href="/" className="logo">
-            <div className="logo-icon">B</div>
-            BingoTool
-          </Link>
-          <ul className="nav-links">
-            <li><Link href="/dashboard">仪表盘</Link></li>
-            <li><Link href="/generate/image">商品图</Link></li>
-            <li><Link href="/generate/text">种草文案</Link></li>
-            <li><Link href="/generate/model" className="active">虚拟模特</Link></li>
-            <li><Link href="/generate/translate">翻译</Link></li>
-          </ul>
+        <Link href="/" className="logo">
+          <div className="logo-icon">B</div>
+          BingoTool
+        </Link>
+        <ul className="nav-links">
+          <li><Link href="/dashboard">仪表盘</Link></li>
+          <li><Link href="/generate/image">商品图</Link></li>
+          <li><Link href="/generate/text">种草文案</Link></li>
+          <li><Link href="/generate/model" className="active">虚拟模特</Link></li>
+          <li><Link href="/generate/translate">翻译</Link></li>
+        </ul>
+        <div className="nav-actions">
           <button className="btn btn-secondary" onClick={handleLogout}>退出</button>
         </div>
       </nav>
 
-      <div className="generate-page">
+      <div className="page-content">
         <div className="page-header">
           <h1>👗 虚拟模特试穿</h1>
           <p>上传服装图片，AI生成模特上身效果图</p>
@@ -98,34 +98,26 @@ export default function ModelGeneratePage() {
               <h3>上传服装图片</h3>
             </div>
             <div className="panel-body">
-              <div className="upload-area" style={{ position: 'relative' }}>
+              <div className="upload-area">
                 <input
                   type="file"
                   accept="image/*"
                   onChange={handleFileChange}
-                  style={{ 
-                    position: 'absolute', 
-                    inset: 0, 
-                    opacity: 0, 
-                    cursor: 'pointer',
-                    width: '100%',
-                    height: '100%'
-                  }}
                 />
                 {preview ? (
-                  <img src={preview} alt="预览" style={{ maxWidth: '100%', borderRadius: '12px' }} />
+                  <img src={preview} alt="预览" />
                 ) : (
                   <>
                     <div className="upload-icon">👗</div>
                     <p>点击或拖拽上传服装图片</p>
-                    <p style={{ fontSize: '12px', color: '#999', marginTop: '8px' }}>建议纯色背景，效果更佳</p>
+                    <p style={{ fontSize: '12px', marginTop: '8px', opacity: 0.7 }}>建议纯色背景，效果更佳</p>
                   </>
                 )}
               </div>
 
               <div className="form-group">
                 <label className="form-label">选择模特</label>
-                <select className="form-input" value={model} onChange={(e) => setModel(e.target.value)}>
+                <select className="form-select" value={model} onChange={(e) => setModel(e.target.value)}>
                   {models.map(m => (
                     <option key={m.id} value={m.id}>{m.name}</option>
                   ))}
@@ -134,7 +126,7 @@ export default function ModelGeneratePage() {
 
               <div className="form-group">
                 <label className="form-label">选择场景</label>
-                <select className="form-input" value={scene} onChange={(e) => setScene(e.target.value)}>
+                <select className="form-select" value={scene} onChange={(e) => setScene(e.target.value)}>
                   {scenes.map(s => (
                     <option key={s.id} value={s.id}>{s.name}</option>
                   ))}
@@ -143,6 +135,7 @@ export default function ModelGeneratePage() {
 
               <button 
                 className="btn btn-primary"
+                style={{ width: '100%' }}
                 onClick={generate}
                 disabled={!file || generating}
               >
@@ -166,7 +159,7 @@ export default function ModelGeneratePage() {
               ) : result ? (
                 <>
                   <div className="output-preview">
-                    <img src={result} alt="生成结果" style={{ maxWidth: '100%' }} />
+                    <img src={result} alt="生成结果" />
                   </div>
                   <div className="output-actions">
                     <button className="btn btn-success btn-sm">💾 下载图片</button>
@@ -174,7 +167,7 @@ export default function ModelGeneratePage() {
                   </div>
                 </>
               ) : (
-                <div className="output-preview" style={{ color: '#999' }}>
+                <div className="output-preview">
                   <div className="upload-icon">👤</div>
                   <p>上传服装图片，点击生成按钮</p>
                 </div>

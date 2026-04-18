@@ -50,7 +50,7 @@ export default function TranslatePage() {
   if (!isLoggedIn) {
     return (
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
-        <p>正在跳转登录页...</p>
+        <p style={{ color: '#86868b' }}>正在跳转登录页...</p>
       </div>
     )
   }
@@ -58,23 +58,23 @@ export default function TranslatePage() {
   return (
     <>
       <nav className="navbar">
-        <div className="container">
-          <Link href="/" className="logo">
-            <div className="logo-icon">B</div>
-            BingoTool
-          </Link>
-          <ul className="nav-links">
-            <li><Link href="/dashboard">仪表盘</Link></li>
-            <li><Link href="/generate/image">商品图</Link></li>
-            <li><Link href="/generate/text">种草文案</Link></li>
-            <li><Link href="/generate/model">虚拟模特</Link></li>
-            <li><Link href="/generate/translate" className="active">翻译</Link></li>
-          </ul>
+        <Link href="/" className="logo">
+          <div className="logo-icon">B</div>
+          BingoTool
+        </Link>
+        <ul className="nav-links">
+          <li><Link href="/dashboard">仪表盘</Link></li>
+          <li><Link href="/generate/image">商品图</Link></li>
+          <li><Link href="/generate/text">种草文案</Link></li>
+          <li><Link href="/generate/model">虚拟模特</Link></li>
+          <li><Link href="/generate/translate" className="active">翻译</Link></li>
+        </ul>
+        <div className="nav-actions">
           <button className="btn btn-secondary" onClick={handleLogout}>退出</button>
         </div>
       </nav>
 
-      <div className="generate-page">
+      <div className="page-content">
         <div className="page-header">
           <h1>🌐 多语言翻译</h1>
           <p>一键翻译商品内容，支持15+语种</p>
@@ -91,9 +91,8 @@ export default function TranslatePage() {
               <div className="form-group">
                 <label className="form-label">源文本</label>
                 <textarea
-                  className="form-input"
+                  className="form-textarea"
                   placeholder="请输入需要翻译的内容..."
-                  style={{ minHeight: '150px', resize: 'vertical' }}
                   value={text}
                   onChange={(e) => setText(e.target.value)}
                 />
@@ -102,7 +101,7 @@ export default function TranslatePage() {
               <div className="form-group">
                 <label className="form-label">目标语言</label>
                 <select 
-                  className="form-input"
+                  className="form-select"
                   value={targetLang} 
                   onChange={(e) => setTargetLang(e.target.value)}
                 >
@@ -116,6 +115,7 @@ export default function TranslatePage() {
 
               <button 
                 className="btn btn-primary"
+                style={{ width: '100%' }}
                 onClick={translate}
                 disabled={!text || translating}
               >
@@ -147,7 +147,7 @@ export default function TranslatePage() {
                   </div>
                 </>
               ) : (
-                <div className="output-preview" style={{ color: '#999' }}>
+                <div className="output-preview">
                   <div className="upload-icon">🌍</div>
                   <p>输入内容，选择语言，点击翻译</p>
                 </div>
