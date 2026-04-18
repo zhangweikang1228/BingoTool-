@@ -25,7 +25,6 @@ export async function GET(req: NextRequest) {
         avatar:   ghUser.avatar,
         provider: 'github',
         githubId: ghUser.githubId,
-        plan:     'free',
       })
     }
 

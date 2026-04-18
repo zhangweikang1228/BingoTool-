@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 const models = [
   { id: 'asian-female', name: '亚洲女性' },
@@ -19,21 +20,26 @@ const scenes = [
 ]
 
 export default function ModelGeneratePage() {
+  const router = useRouter()
   const [file, setFile] = useState<File | null>(null)
   const [preview, setPreview] = useState('')
   const [model, setModel] = useState('asian-female')
   const [scene, setScene] = useState('studio')
   const [generating, setGenerating] = useState(false)
   const [result, setResult] = useState('')
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
 
+  // 检查登录状态
   useEffect(() => {
-    if (!document.cookie.includes('user_id=')) {
-      window.location.href = '/login'
-    } else {
-      setIsLoggedIn(true)
+    const cookies = document.cookie.split(';').reduce((acc, c) => {
+      const [k, v] = c.trim().split('=')
+      acc[k] = v
+      return acc
+    }, {} as Record<string, string>)
+    
+    if (!cookies['b_session']) {
+      router.push('/login')
     }
-  }, [])
+  }, [router])
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0]
@@ -47,22 +53,34 @@ export default function ModelGeneratePage() {
     if (!file) return
     
     setGenerating(true)
-    await new Promise(resolve => setTimeout(resolve, 3000))
-    setResult('https://picsum.photos/600/800')
-    setGenerating(false)
+    
+    // 调用后端 API
+    try {
+      const res = await fetch('/api/generate/model', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ model, scene })
+      })
+      
+      if (res.status === 401) {
+        router.push('/login')
+        return
+      }
+      
+      const data = await res.json()
+      if (data.url) {
+        setResult(data.url)
+      }
+    } catch (error) {
+      console.error('[Model Generate] 错误:', error)
+    } finally {
+      setGenerating(false)
+    }
   }
 
   const handleLogout = () => {
-    document.cookie = 'user_id=;expires=Thu, 01 Jan 1970 00:00:00 GMT'
-    window.location.href = '/login'
-  }
-
-  if (!isLoggedIn) {
-    return (
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
-        <p style={{ color: '#86868b' }}>正在跳转登录页...</p>
-      </div>
-    )
+    document.cookie = 'b_session=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/'
+    router.push('/login')
   }
 
   return (

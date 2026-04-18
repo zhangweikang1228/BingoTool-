@@ -72,8 +72,8 @@ export default function LoginPage() {
         return
       }
 
-      // 登录成功，跳转
-      router.push('/dashboard')
+      // 登录成功，跳转到首页
+      router.push('/')
       router.refresh()
     } catch {
       setError('网络错误，请重试')

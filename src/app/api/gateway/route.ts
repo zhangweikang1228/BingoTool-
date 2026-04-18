@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { findApiKey, checkRateLimit } from '@/lib/db'
+import { findApiKey } from '@/lib/db'
+import { db } from '@/lib/db'
 
 export const runtime = 'nodejs'
 
@@ -18,7 +19,9 @@ export async function POST(req: NextRequest) {
   if (!found) return NextResponse.json({ error: '无效的 API Key' }, { status: 403 })
 
   const { user, apiKey: keyMeta } = found
-  const { allowed, remaining } = checkRateLimit(user)
+  
+  // 检查限流
+  const { allowed, remaining } = db.apiKeys.checkRateLimit(user.id)
 
   if (!allowed) {
     return NextResponse.json({

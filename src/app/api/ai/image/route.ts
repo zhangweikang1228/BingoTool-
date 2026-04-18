@@ -1,7 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { generateImage } from '../../../../lib/ai'
+import { requireAuth } from '@/lib/user-auth'
 
 export async function POST(req: NextRequest) {
+  // 检查用户认证
+  const { isAuth, error } = await requireAuth()
+  if (!isAuth) return error!
+  
   try {
     const { imageUrl, angle } = await req.json()
     if (!imageUrl) return NextResponse.json({ error: '缺少图片' }, { status: 400 })
@@ -20,6 +25,7 @@ export async function POST(req: NextRequest) {
     const url = await generateImage({ prompt, inputUrls: [imageUrl], outputFile, aspectRatio: '1:1' })
     return NextResponse.json({ success: true, url })
   } catch (e: unknown) {
+    console.error('[AI Image] 错误:', e)
     const msg = e instanceof Error ? e.message : String(e)
     return NextResponse.json({ error: msg }, { status: 500 })
   }

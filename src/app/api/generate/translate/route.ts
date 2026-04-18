@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
+import { requireAuth } from '@/lib/user-auth'
 
-// 简化的翻译逻辑（实际项目调用Google/DeepL/有道API）
+// 简化的翻译逻辑（需要登录）
 const simpleTranslations: Record<string, Record<string, string>> = {
   '连衣裙': { en: 'Dress', ja: 'ドレス', ko: '원피스' },
   '运动鞋': { en: 'Sneakers', ja: 'スニーカー', ko: '운동화' },
@@ -38,6 +39,10 @@ const translateText = (text: string, targetLang: string): string => {
 }
 
 export async function POST(request: Request) {
+  // 检查用户认证
+  const { isAuth, error } = await requireAuth()
+  if (!isAuth) return error!
+  
   try {
     const { text, targetLang } = await request.json()
     
@@ -67,6 +72,7 @@ export async function POST(request: Request) {
       targetLang
     })
   } catch (error) {
+    console.error('[Generate Translate] 错误:', error)
     return NextResponse.json(
       { error: '翻译失败' },
       { status: 500 }

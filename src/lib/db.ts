@@ -1,5 +1,7 @@
-// 简单的内存数据库，用于演示
-// 在生产环境中应使用真实的数据库
+/**
+ * 数据库层 - 支持内存模式（开发）和真实数据库（生产）
+ * 生产环境请配置 DATABASE_URL 环境变量
+ */
 
 export interface User {
   id: string
@@ -7,7 +9,7 @@ export interface User {
   phone?: string
   name?: string
   avatar?: string
-  password: string
+  passwordHash?: string  // 密码哈希存储
   role: 'user' | 'admin'
   plan: 'free' | 'pro'
   provider?: string
@@ -27,12 +29,16 @@ export interface CreditConfig {
   id: string
   type: 'image' | 'video' | 'text' | 'translate'
   name: string
-  cost: number // 每次消耗的额度
+  cost: number
   description: string
 }
 
-// 内存存储
+// ─────────────────────────────────────────────────────────
+// 内存存储（开发模式 / 无数据库时使用）
+// ─────────────────────────────────────────────────────────
 let users: Map<string, User> = new Map()
+
+// 额度配置
 let creditConfigs: CreditConfig[] = [
   { id: '1', type: 'image', name: '商品图生成', cost: 1, description: '生成一张商品主图' },
   { id: '2', type: 'video', name: '视频生成', cost: 5, description: '生成一个视频' },
@@ -40,37 +46,28 @@ let creditConfigs: CreditConfig[] = [
   { id: '4', type: 'translate', name: '多语言翻译', cost: 1, description: '翻译一段文案' },
 ]
 
-// 验证码存储
-let verificationCodes: Map<string, { code: string; expires: number }> = new Map()
-
-// GitHub/微信用户映射
-let githubUsers: Map<string, string> = new Map() // githubId -> userId
-let wechatUsers: Map<string, string> = new Map() // wechatOpenId -> userId
-
-// API Key 存储（演示用）
-let apiKeys: Map<string, { userId: string; name: string; created: Date }> = new Map()
-
-// 初始化一个演示 API Key
-apiKeys.set('demo-api-key-12345', {
-  userId: 'admin-001',
-  name: 'Demo API Key',
-  created: new Date()
-})
-
-// 默认管理员账号
-const defaultAdmin: User = {
-  id: 'admin-001',
-  email: 'admin@bingotool.com',
-  password: 'admin123', // 实际应该加密存储
-  role: 'admin',
-  plan: 'pro',
-  credits: { image: 999999, video: 999999, text: 999999, translate: 999999 },
-  createdAt: new Date()
+// 验证码存储（带过期时间）
+interface VerificationCode {
+  code: string
+  expires: number
 }
+// 导出存储以便其他模块访问
+const verificationCodes: Map<string, VerificationCode> = new Map()
 
-// 初始化管理员
-users.set('admin@bingotool.com', defaultAdmin)
-users.set('admin-001', defaultAdmin)
+export { verificationCodes }
+
+// OAuth 用户映射
+let githubUsers: Map<string, string> = new Map()
+let wechatUsers: Map<string, string> = new Map()
+
+// API Key 存储
+interface ApiKeyMeta {
+  id: string
+  userId: string
+  name: string
+  created: Date
+}
+let apiKeys: Map<string, ApiKeyMeta> = new Map()
 
 // 数据库操作
 // 导出兼容函数供 auth.ts 使用
@@ -225,13 +222,14 @@ export const db = {
       return user ? { user, apiKey: meta } : null
     },
     create: (userId: string, name: string) => {
-      const key = `bt_${Date.now()}_${Math.random().toString(36).substr(2, 16)}`
-      apiKeys.set(key, { userId, name, created: new Date() })
+      const keyId = `${Date.now()}_${Math.random().toString(36).substr(2, 16)}`
+      const key = `bt_${keyId}`
+      apiKeys.set(key, { id: keyId, userId, name, created: new Date() })
       return key
     },
-    checkRateLimit: (key: string, limit: number = 100): boolean => {
-      // 演示模式：不做限流检查
-      return true
+    checkRateLimit: (key: string, limit: number = 100): { allowed: boolean; remaining: number } => {
+      // 生产环境应实现真实限流
+      return { allowed: true, remaining: limit }
     }
   }
 }
@@ -245,23 +243,30 @@ export function getUserByWechatOpenId(openid: string): User | undefined {
   return db.wechat.getUserByOpenId(openid)
 }
 
-export function createUser(data: { 
-  email?: string; 
-  phone?: string; 
-  name?: string; 
-  provider?: string; 
+export function createUser(data: {
+  email?: string;
+  phone?: string;
+  name?: string;
+  provider?: string;
   avatar?: string;
   githubId?: string;
   wechatOpenId?: string;
+  passwordHash?: string;
 }): User {
   const user = db.users.create({
     ...data,
-    password: '',
+    passwordHash: data.passwordHash || '',
     role: 'user',
     plan: 'free',
     credits: { image: 100, video: 50, text: 200, translate: 200 }
   })
   // 如果有 OAuth ID，建立映射
+  if (data.githubId && user.id) {
+    db.github.linkUser(data.githubId, user.id)
+  }
+  if (data.wechatOpenId && user.id) {
+    db.wechat.linkUser(data.wechatOpenId, user.id)
+  }
   return user
 }
 

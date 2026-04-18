@@ -1,7 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { llmTask } from '../../../../lib/ai'
+import { requireAuth } from '@/lib/user-auth'
 
 export async function POST(req: NextRequest) {
+  // 检查用户认证
+  const { isAuth, error } = await requireAuth()
+  if (!isAuth) return error!
+  
   try {
     const { product, platform } = await req.json()
     if (!product?.trim()) return NextResponse.json({ error: '商品描述不能为空' }, { status: 400 })
@@ -16,6 +21,7 @@ export async function POST(req: NextRequest) {
     const text = await llmTask(prompt, 2000)
     return NextResponse.json({ success: true, text })
   } catch (e: unknown) {
+    console.error('[AI Copy] 错误:', e)
     const msg = e instanceof Error ? e.message : String(e)
     return NextResponse.json({ error: msg }, { status: 500 })
   }

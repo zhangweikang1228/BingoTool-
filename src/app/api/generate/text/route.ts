@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
+import { requireAuth } from '@/lib/user-auth'
 
-// 模拟AI文案生成
+// 模拟AI文案生成（需要登录）
 const generateCopy = (productInfo: string, platform: string, tone: string): string => {
   const platformNames: Record<string, string> = {
     'xiaohongshu': '小红书',
@@ -48,6 +49,10 @@ ${productInfo}
 }
 
 export async function POST(request: Request) {
+  // 检查用户认证
+  const { isAuth, error } = await requireAuth()
+  if (!isAuth) return error!
+  
   try {
     const { productInfo, platform, tone } = await request.json()
     
@@ -68,6 +73,7 @@ export async function POST(request: Request) {
       text
     })
   } catch (error) {
+    console.error('[Generate Text] 错误:', error)
     return NextResponse.json(
       { error: '生成失败' },
       { status: 500 }

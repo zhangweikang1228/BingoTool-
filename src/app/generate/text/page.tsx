@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 const platforms = [
   { id: 'xiaohongshu', name: '小红书' },
@@ -17,42 +18,58 @@ const tones = [
 ]
 
 export default function TextGeneratePage() {
+  const router = useRouter()
   const [productInfo, setProductInfo] = useState('')
   const [platform, setPlatform] = useState('xiaohongshu')
   const [tone, setTone] = useState('casual')
   const [generating, setGenerating] = useState(false)
   const [result, setResult] = useState('')
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
 
+  // 检查登录状态
   useEffect(() => {
-    if (!document.cookie.includes('user_id=')) {
-      window.location.href = '/login'
-    } else {
-      setIsLoggedIn(true)
+    const cookies = document.cookie.split(';').reduce((acc, c) => {
+      const [k, v] = c.trim().split('=')
+      acc[k] = v
+      return acc
+    }, {} as Record<string, string>)
+    
+    if (!cookies['b_session']) {
+      router.push('/login')
     }
-  }, [])
+  }, [router])
 
   const generate = async () => {
     if (!productInfo) return
     
     setGenerating(true)
     
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    setResult('这是一款非常实用的产品...\n\n【产品亮点】\n✨ 亮点1：设计精美\n✨ 亮点2：品质卓越\n✨ 亮点3：性价比高\n\n快来试试吧！')
-    setGenerating(false)
+    // 调用后端 API
+    try {
+      const res = await fetch('/api/generate/text', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ productInfo, platform, tone })
+      })
+      
+      if (res.status === 401) {
+        router.push('/login')
+        return
+      }
+      
+      const data = await res.json()
+      if (data.text) {
+        setResult(data.text)
+      }
+    } catch (error) {
+      console.error('[Text Generate] 错误:', error)
+    } finally {
+      setGenerating(false)
+    }
   }
 
   const handleLogout = () => {
-    document.cookie = 'user_id=;expires=Thu, 01 Jan 1970 00:00:00 GMT'
-    window.location.href = '/login'
-  }
-
-  if (!isLoggedIn) {
-    return (
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
-        <p style={{ color: '#86868b' }}>正在跳转登录页...</p>
-      </div>
-    )
+    document.cookie = 'b_session=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/'
+    router.push('/login')
   }
 
   return (

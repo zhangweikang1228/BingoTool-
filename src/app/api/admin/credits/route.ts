@@ -1,8 +1,13 @@
 import { NextResponse } from 'next/server'
 import { db } from '@/lib/db'
+import { requireAdmin } from '@/lib/admin-auth'
 
-// 更新用户额度
+// 更新用户额度（需要管理员权限）
 export async function PUT(request: Request) {
+  // 检查管理员权限
+  const { isAdmin, error } = await requireAdmin()
+  if (!isAdmin) return error!
+  
   try {
     const { userId, credits } = await request.json()
     

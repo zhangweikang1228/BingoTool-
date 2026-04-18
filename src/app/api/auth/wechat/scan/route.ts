@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
     const scan = pendingScans[sessionId]
     if (Date.now() - scan.createdAt > 300000) { delete pendingScans[sessionId]; return NextResponse.json({ status: 'expired' }) }
     let user = getUserByWechatOpenId(scan.openid)
-    if (!user) user = createUser({ name: scan.nickname, email: `${scan.openid}@wechat`, avatar: scan.avatar, provider: 'wechat', wechatOpenId: scan.openid, plan: 'free' })
+    if (!user) user = createUser({ name: scan.nickname, email: `${scan.openid}@wechat`, avatar: scan.avatar, provider: 'wechat', wechatOpenId: scan.openid })
     delete pendingScans[sessionId]
     return NextResponse.json({ status: 'confirmed', user: { id: user.id, name: user.name, avatar: user.avatar } })
   }

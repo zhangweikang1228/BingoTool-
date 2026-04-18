@@ -1,8 +1,13 @@
 import { NextResponse } from 'next/server'
 import { db } from '@/lib/db'
+import { requireAdmin } from '@/lib/admin-auth'
 
-// 获取额度配置
+// 获取额度配置（需要管理员权限）
 export async function GET() {
+  // 检查管理员权限
+  const { isAdmin, error } = await requireAdmin()
+  if (!isAdmin) return error!
+  
   try {
     const configs = db.creditConfigs.getAll()
     
@@ -19,8 +24,12 @@ export async function GET() {
   }
 }
 
-// 更新额度配置
+// 更新额度配置（需要管理员权限）
 export async function PUT(request: Request) {
+  // 检查管理员权限
+  const { isAdmin, error } = await requireAdmin()
+  if (!isAdmin) return error!
+  
   try {
     const { type, cost } = await request.json()
     

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 const languages = [
   { id: 'en', name: '英语', flag: '🇺🇸' },
@@ -15,44 +16,57 @@ const languages = [
 ]
 
 export default function TranslatePage() {
+  const router = useRouter()
   const [text, setText] = useState('')
   const [targetLang, setTargetLang] = useState('en')
   const [translating, setTranslating] = useState(false)
   const [result, setResult] = useState('')
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
 
+  // 检查登录状态
   useEffect(() => {
-    if (!document.cookie.includes('user_id=')) {
-      window.location.href = '/login'
-    } else {
-      setIsLoggedIn(true)
+    const cookies = document.cookie.split(';').reduce((acc, c) => {
+      const [k, v] = c.trim().split('=')
+      acc[k] = v
+      return acc
+    }, {} as Record<string, string>)
+    
+    if (!cookies['b_session']) {
+      router.push('/login')
     }
-  }, [])
+  }, [router])
 
   const translate = async () => {
     if (!text) return
     
     setTranslating(true)
     
-    const lang = languages.find(l => l.id === targetLang)
-    await new Promise(resolve => setTimeout(resolve, 1500))
-    
-    setResult(`[${lang?.name}译本]\n\n${text}\n\n---\n翻译说明：\n· 已根据目标市场语言习惯进行调整\n· 关键词已优化，利于SEO\n· 可直接用于跨境电商平台`)
-    
-    setTranslating(false)
+    // 调用后端 API
+    try {
+      const res = await fetch('/api/generate/translate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text, targetLang })
+      })
+      
+      if (res.status === 401) {
+        router.push('/login')
+        return
+      }
+      
+      const data = await res.json()
+      if (data.text) {
+        setResult(data.text)
+      }
+    } catch (error) {
+      console.error('[Translate] 错误:', error)
+    } finally {
+      setTranslating(false)
+    }
   }
 
   const handleLogout = () => {
-    document.cookie = 'user_id=;expires=Thu, 01 Jan 1970 00:00:00 GMT'
-    window.location.href = '/login'
-  }
-
-  if (!isLoggedIn) {
-    return (
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
-        <p style={{ color: '#86868b' }}>正在跳转登录页...</p>
-      </div>
-    )
+    document.cookie = 'b_session=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/'
+    router.push('/login')
   }
 
   return (

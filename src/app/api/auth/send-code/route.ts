@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
-import { db } from '@/lib/db'
+import { pg, USE_POSTGRES } from '@/lib/db-factory'
+import crypto from 'crypto'
 
 export async function POST(request: Request) {
   try {
@@ -13,14 +14,13 @@ export async function POST(request: Request) {
     }
     
     // 生成6位验证码
-    const code = Math.floor(100000 + Math.random() * 900000).toString()
+    const code = crypto.randomInt(100000, 999999).toString()
     
-    // 存储验证码
-    db.codes.set(phone, code)
+    // 存储验证码到数据库
+    await pg.codes.set(phone, code)
     
-    // 在实际环境中，这里应该调用短信服务商API发送验证码
-    // 例如：阿里云、腾讯云等
-    console.log(`[验证码] 手机号: ${phone.substring(0,3)}****, 验证码: ${code}`)
+    console.log('[发送验证码] 手机号:', phone, '验证码:', code)
+    console.log('[发送验证码] 存储方式:', USE_POSTGRES ? 'PostgreSQL' : '内存')
     
     return NextResponse.json({
       success: true,

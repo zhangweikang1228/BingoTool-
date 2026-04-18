@@ -4,6 +4,9 @@ import './globals.css'
 export const metadata: Metadata = {
   title: 'BingoTool - AI内容生成平台',
   description: '一键生成商品主图、种草文案、短视频脚本',
+  icons: {
+    icon: '/favicon.ico',
+  },
 }
 
 export default function RootLayout({

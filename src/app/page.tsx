@@ -1,48 +1,52 @@
 'use client'
 
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import styles from './page.module.css'
 
 const features = [
   {
     id: 'image',
-    icon: '🖼️',
+    icon: '📸',
     title: '商品图生成',
-    desc: 'AI自动生成精美商品主图，一键优化展示效果',
+    desc: '一键生成多角度商品主图',
+    image: '/image-banner.png',
     gradient: 'gradient1',
     href: '/generate/image',
-    visual: '✨'
-  },
-  {
-    id: 'text',
-    icon: '✍️',
-    title: '种草文案',
-    desc: '智能创作小红书、抖音等平台种草内容',
-    gradient: 'gradient2',
-    href: '/generate/text',
-    visual: '📝'
   },
   {
     id: 'model',
     icon: '👗',
     title: '虚拟模特',
-    desc: 'AI模特试穿效果，节省拍摄成本',
+    desc: 'AI 生成服装模特展示图',
+    image: '/model-banner.png',
     gradient: 'gradient3',
     href: '/generate/model',
-    visual: '👤'
+  },
+  {
+    id: 'text',
+    icon: '✍️',
+    title: '种草文案',
+    desc: '爆款文案一键生成',
+    image: '/copy-banner.png',
+    gradient: 'gradient2',
+    href: '/generate/text',
   },
   {
     id: 'translate',
-    icon: '🌐',
+    icon: '🌍',
     title: '多语言翻译',
-    desc: '一键翻译15+语种，助力跨境电商',
+    desc: '跨境电商本地化翻译',
+    image: '/translate-banner.png',
     gradient: 'gradient4',
     href: '/generate/translate',
-    visual: '🌍'
   },
 ]
 
 export default function HomePage() {
+  const router = useRouter()
+  const isAuthenticated = true // TODO: 实际应从 cookie 中读取
+
   return (
     <>
       <div className={styles.gradientBg} />
@@ -54,19 +58,20 @@ export default function HomePage() {
         </Link>
         
         <ul className="nav-links">
-          <li><Link href="/generate/image">商品图</Link></li>
-          <li><Link href="/generate/text">种草文案</Link></li>
-          <li><Link href="/generate/model">虚拟模特</Link></li>
-          <li><Link href="/generate/translate">翻译</Link></li>
+          {features.map(f => (
+            <li key={f.id}>
+              <Link href={f.href}>{f.title}</Link>
+            </li>
+          ))}
         </ul>
         
         <div className="nav-actions">
-          <Link href="/admin" className="btn btn-ghost" style={{ marginRight: '12px' }}>
-            管理后台
+          <Link href="/dashboard" className="btn btn-ghost" style={{ marginRight: '12px' }}>
+            工作台
           </Link>
-          <Link href="/login" className="btn btn-primary">
-            立即开始
-          </Link>
+          <div className="user-avatar" style={{ width: '36px', height: '36px', borderRadius: '50%', background: 'linear-gradient(135deg, #4f46e5, #818cf8)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold' }}>
+            U
+          </div>
         </div>
       </nav>
 
@@ -85,8 +90,8 @@ export default function HomePage() {
         </p>
         
         <div className={styles.heroActions}>
-          <Link href="/login" className="btn btn-primary">
-            🚀 立即体验
+          <Link href="/dashboard" className="btn btn-primary">
+            🚀 进入工作台
           </Link>
           <Link href="#features" className="btn btn-secondary">
             了解更多
@@ -105,20 +110,37 @@ export default function HomePage() {
       <section className={styles.features}>
         <div className={styles.featuresGrid}>
           {features.map((f) => (
-            <Link key={f.id} href={f.href} className={`${styles.featureCard} ${styles[f.gradient]}`}>
-              <div className={styles.featureVisual}>
-                <div className={styles.featureVisualInner}>
-                  <span className={styles.featureIconLarge}>{f.visual}</span>
+            <div 
+              key={f.id} 
+              className={`${styles.featureCard} ${styles[f.gradient]}`}
+              style={{ cursor: 'pointer' }}
+              onClick={() => router.push(f.href)}
+            >
+              <div className={styles.featureVisual} style={{ position: 'relative', overflow: 'hidden' }}>
+                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(0,0,0,0.1), rgba(0,0,0,0.3))' }} />
+                <img 
+                  src={f.image} 
+                  alt={f.title}
+                  style={{ 
+                    width: '100%', 
+                    height: '100%', 
+                    objectFit: 'cover',
+                    transition: 'transform 0.3s',
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.05)')}
+                  onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+                />
+                <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '16px', background: 'linear-gradient(transparent, rgba(0,0,0,0.7))', color: 'white' }}>
+                  <span style={{ fontSize: '24px', fontWeight: 'bold', display: 'block' }}>{f.icon} {f.title}</span>
+                  <span style={{ fontSize: '14px', opacity: 0.9 }}>{f.desc}</span>
                 </div>
               </div>
               <div>
-                <h3>{f.title}</h3>
-                <p>{f.desc}</p>
                 <span className={styles.learnMore}>
-                  了解更多 →
+                  立即使用 →
                 </span>
               </div>
-            </Link>
+            </div>
           ))}
         </div>
       </section>
@@ -126,7 +148,7 @@ export default function HomePage() {
       <section className={styles.ctaSection}>
         <h2>准备好开始了吗？</h2>
         <p>立即体验 BingoTool，让创作变得简单</p>
-        <Link href="/login" className={`btn btn-primary ${styles.ctaBtn}`}>
+        <Link href="/dashboard" className={`btn btn-primary ${styles.ctaBtn}`}>
           🚀 开始使用
         </Link>
       </section>
