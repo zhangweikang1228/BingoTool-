@@ -48,8 +48,9 @@ export async function setSession(userId: string): Promise<string> {
 }
 
 // ─── GitHub OAuth ─────────────────────────────────────
+import { randomBytes } from 'crypto'
+
 export function getGithubAuthUrl(): string {
-  const { randomBytes } = await import('crypto')
   const state = randomBytes(16).toString('hex')
   const params = new URLSearchParams({
     client_id:     process.env.GITHUB_CLIENT_ID     || '',
