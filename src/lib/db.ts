@@ -245,7 +245,15 @@ export function getUserByWechatOpenId(openid: string): User | undefined {
   return db.wechat.getUserByOpenId(openid)
 }
 
-export function createUser(data: { email?: string; phone?: string; name?: string; provider?: string; avatar?: string }): User {
+export function createUser(data: { 
+  email?: string; 
+  phone?: string; 
+  name?: string; 
+  provider?: string; 
+  avatar?: string;
+  githubId?: string;
+  wechatOpenId?: string;
+}): User {
   const user = db.users.create({
     ...data,
     password: '',

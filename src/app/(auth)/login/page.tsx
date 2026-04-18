@@ -12,6 +12,41 @@ export default function LoginPage() {
   const [code, setCode] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [sending, setSending] = useState(false)
+  const [countdown, setCountdown] = useState(0)
+
+  const sendCode = async () => {
+    if (countdown > 0) return
+    if (!phone || phone.length !== 11) {
+      setError('请输入正确的11位手机号')
+      return
+    }
+    setSending(true)
+    setError('')
+    try {
+      const res = await fetch('/api/auth/send-code', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone }),
+      })
+      const data = await res.json()
+      if (!data.success) {
+        setError(data.message || '发送失败')
+        return
+      }
+      setCountdown(60)
+      const timer = setInterval(() => {
+        setCountdown(c => {
+          if (c <= 1) { clearInterval(timer); return 0 }
+          return c - 1
+        })
+      }, 1000)
+    } catch {
+      setError('网络错误，请重试')
+    } finally {
+      setSending(false)
+    }
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -122,8 +157,8 @@ export default function LoginPage() {
                   onChange={(e) => setCode(e.target.value)}
                   required
                 />
-                <button type="button" className="btn-code">
-                  获取验证码
+                <button type="button" className="btn-code" onClick={sendCode} disabled={sending}>
+                  {countdown > 0 ? `${countdown}s` : '获取验证码'}
                 </button>
               </div>
               <input

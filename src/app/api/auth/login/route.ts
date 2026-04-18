@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { db } from '@/lib/db'
 
 // 演示模式 - 接受任意非空凭证
 export async function POST(req: NextRequest) {
@@ -21,6 +22,12 @@ export async function POST(req: NextRequest) {
         return response
       }
       if (phone && code) {
+        // 验证验证码
+        const savedCode = db.codes.get(phone)
+        if (!savedCode || savedCode !== code) {
+          return NextResponse.json({ success: false, message: '验证码错误或已过期' }, { status: 400 })
+        }
+        db.codes.delete(phone) // 验证码只能用一次
         // 手机验证码登录
         const response = NextResponse.json({ success: true })
         response.cookies.set('session', Buffer.from(`phone:${phone}:${Date.now()}`).toString('base64'), {

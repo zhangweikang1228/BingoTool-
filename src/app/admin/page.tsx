@@ -60,13 +60,24 @@ export default function AdminPage() {
   const handleAdminLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoggingIn(true)
+    setMessage(null)
     
-    if (loginData.email === 'admin@bingotool.com' && loginData.password === 'admin123') {
-      document.cookie = 'is_admin=true; path=/; max-age=86400'
-      setIsAdmin(true)
-      loadData()
-    } else {
-      setMessage({ type: 'error', text: '管理员账号或密码错误' })
+    try {
+      const res = await fetch('/api/admin/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(loginData),
+      })
+      const data = await res.json()
+      if (data.success) {
+        setIsAdmin(true)
+        loadData()
+      } else {
+        setMessage({ type: 'error', text: data.message || '管理员账号或密码错误' })
+        setTimeout(() => setMessage(null), 3000)
+      }
+    } catch {
+      setMessage({ type: 'error', text: '网络错误，请重试' })
       setTimeout(() => setMessage(null), 3000)
     }
     
@@ -159,8 +170,8 @@ export default function AdminPage() {
     setTimeout(() => setMessage(null), 3000)
   }
 
-  const handleLogout = () => {
-    document.cookie = 'is_admin=; path=/; max-age=0'
+  const handleLogout = async () => {
+    await fetch('/api/admin/login', { method: 'DELETE' })
     setIsAdmin(false)
   }
 
@@ -203,7 +214,7 @@ export default function AdminPage() {
                 <label>管理员邮箱</label>
                 <input
                   type="email"
-                  placeholder="admin@bingotool.com"
+                  placeholder="管理员邮箱"
                   value={loginData.email}
                   onChange={(e) => setLoginData({ ...loginData, email: e.target.value })}
                   required
@@ -225,8 +236,8 @@ export default function AdminPage() {
             </form>
             
             <div className="admin-hint">
-              <p>默认管理员账号：admin@bingotool.com</p>
-              <p>默认密码：admin123</p>
+              <p>请使用管理员账号登录</p>
+              <p>如遗忘密码，请联系系统管理员重置</p>
             </div>
           </div>
         </div>

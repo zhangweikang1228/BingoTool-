@@ -38,7 +38,16 @@ export async function getSession(): Promise<SessionUser | null> {
     if (!id) return null
     // 懒加载避免循环依赖
     const { getUserById } = await import('./db')
-    return getUserById(id) as SessionUser | null
+    const user = getUserById(id)
+    if (!user) return null
+    return {
+      id: user.id,
+      name: user.name || user.email || 'User',
+      email: user.email || '',
+      avatar: user.avatar,
+      plan: user.plan,
+      provider: user.provider || 'local',
+    }
   } catch { return null }
 }
 

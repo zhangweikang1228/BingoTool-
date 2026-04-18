@@ -20,7 +20,7 @@ export async function POST(request: Request) {
     
     // 在实际环境中，这里应该调用短信服务商API发送验证码
     // 例如：阿里云、腾讯云等
-    console.log(`[验证码] 手机号: ${phone}, 验证码: ${code}`)
+    console.log(`[验证码] 手机号: ${phone.substring(0,3)}****, 验证码: ${code}`)
     
     return NextResponse.json({
       success: true,
