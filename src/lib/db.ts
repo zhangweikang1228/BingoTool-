@@ -5,8 +5,14 @@ export interface User {
   id: string
   email?: string
   phone?: string
+  name?: string
+  avatar?: string
   password: string
   role: 'user' | 'admin'
+  plan: 'free' | 'pro'
+  provider?: string
+  githubId?: string
+  wechatOpenId?: string
   credits: {
     image: number
     video: number
@@ -57,6 +63,7 @@ const defaultAdmin: User = {
   email: 'admin@bingotool.com',
   password: 'admin123', // 实际应该加密存储
   role: 'admin',
+  plan: 'pro',
   credits: { image: 999999, video: 999999, text: 999999, translate: 999999 },
   createdAt: new Date()
 }
@@ -238,11 +245,12 @@ export function getUserByWechatOpenId(openid: string): User | undefined {
   return db.wechat.getUserByOpenId(openid)
 }
 
-export function createUser(data: { email?: string; phone?: string; name?: string; provider?: string }): User {
+export function createUser(data: { email?: string; phone?: string; name?: string; provider?: string; avatar?: string }): User {
   const user = db.users.create({
     ...data,
     password: '',
     role: 'user',
+    plan: 'free',
     credits: { image: 100, video: 50, text: 200, translate: 200 }
   })
   // 如果有 OAuth ID，建立映射
