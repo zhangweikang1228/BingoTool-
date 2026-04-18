@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { generateImage } from '../../../../lib/ai'
-import path from 'path'
-import { writeFileSync } from 'fs'
 
 export async function POST(req: NextRequest) {
   try {
